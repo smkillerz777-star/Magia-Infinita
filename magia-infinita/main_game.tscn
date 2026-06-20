@@ -1,6 +1,13 @@
 [gd_scene format=3 uid="uid://dak7h6lc532gs"]
 
 [ext_resource type="Script" uid="uid://cmq2ujylspex7" path="res://main_game.gd" id="1_1oj5k"]
+[ext_resource type="PackedScene" uid="uid://dqwevh5plt1hj" path="res://inventory.tscn" id="2_yx7mw"]
 
 [node name="main_game" type="Node2D" unique_id=1951637327]
 script = ExtResource("1_1oj5k")
+
+[node name="inventory" parent="." unique_id=1052778249 instance=ExtResource("2_yx7mw")]
+offset_left = 218.0
+offset_top = 129.0
+offset_right = 938.0
+offset_bottom = 489.0

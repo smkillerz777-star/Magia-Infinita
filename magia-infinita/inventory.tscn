@@ -1,0 +1,202 @@
+[gd_scene format=3 uid="uid://dqwevh5plt1hj"]
+
+[ext_resource type="Script" uid="uid://cyrw1pgm4fwj1" path="res://inventory.gd" id="1_pohso"]
+[ext_resource type="Texture2D" uid="uid://cq0hmujlnh7so" path="res://icon.svg" id="2_psafj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pohso"]
+bg_color = Color(0.093160845, 0.093160845, 0.0931608, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_psafj"]
+bg_color = Color(0.23826218, 0.2382622, 0.23826209, 1)
+
+[node name="inventory" type="Control" unique_id=1052778249]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pohso")
+
+[node name="Panel" type="Panel" parent="." unique_id=1956787067]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pohso")
+
+[node name="block1" type="Panel" parent="." unique_id=698735222]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.15
+anchor_bottom = 0.2
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="Button" type="Button" parent="block1" unique_id=449468122]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("2_psafj")
+expand_icon = true
+
+[node name="block2" type="Panel" parent="." unique_id=1311561184]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.05
+anchor_right = 0.3
+anchor_bottom = 0.2
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block3" type="Panel" parent="." unique_id=911605083]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.35
+anchor_top = 0.05
+anchor_right = 0.45
+anchor_bottom = 0.2
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block4" type="Panel" parent="." unique_id=424342037]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.05
+anchor_right = 0.6
+anchor_bottom = 0.2
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block5" type="Panel" parent="." unique_id=1190847918]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.65
+anchor_top = 0.05
+anchor_right = 0.75
+anchor_bottom = 0.2
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block6" type="Panel" parent="." unique_id=1654364094]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8
+anchor_top = 0.05
+anchor_right = 0.9
+anchor_bottom = 0.2
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block7" type="Panel" parent="." unique_id=86859338]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.25
+anchor_right = 0.15
+anchor_bottom = 0.4
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block8" type="Panel" parent="." unique_id=656614057]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.25
+anchor_right = 0.3
+anchor_bottom = 0.4
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block9" type="Panel" parent="." unique_id=821185788]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.35
+anchor_top = 0.25
+anchor_right = 0.45
+anchor_bottom = 0.4
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block10" type="Panel" parent="." unique_id=279308581]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.25
+anchor_right = 0.6
+anchor_bottom = 0.4
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block11" type="Panel" parent="." unique_id=747045072]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.65
+anchor_top = 0.25
+anchor_right = 0.75
+anchor_bottom = 0.4
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block12" type="Panel" parent="." unique_id=1015563890]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8
+anchor_top = 0.25
+anchor_right = 0.9
+anchor_bottom = 0.4
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block13" type="Panel" parent="." unique_id=1396550619]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.45
+anchor_right = 0.15
+anchor_bottom = 0.6
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block14" type="Panel" parent="." unique_id=601689186]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.45
+anchor_right = 0.3
+anchor_bottom = 0.6
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block15" type="Panel" parent="." unique_id=828746643]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.35
+anchor_top = 0.45
+anchor_right = 0.45
+anchor_bottom = 0.6
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block16" type="Panel" parent="." unique_id=1094128851]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.45
+anchor_right = 0.6
+anchor_bottom = 0.6
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block17" type="Panel" parent="." unique_id=679424170]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.65
+anchor_top = 0.45
+anchor_right = 0.75
+anchor_bottom = 0.6
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[node name="block18" type="Panel" parent="." unique_id=1230251462]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8
+anchor_top = 0.45
+anchor_right = 0.9
+anchor_bottom = 0.6
+theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
+
+[connection signal="pressed" from="block1/Button" to="." method="_on_button_pressed"]
