@@ -11,9 +11,10 @@ bg_color = Color(0.23826218, 0.2382622, 0.23826209, 1)
 
 [node name="inventory" type="Control" unique_id=1052778249]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_pohso")
@@ -199,4 +200,15 @@ anchor_right = 0.9
 anchor_bottom = 0.6
 theme_override_styles/panel = SubResource("StyleBoxFlat_psafj")
 
+[node name="cancel" type="Button" parent="." unique_id=539552458]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -58.0
+offset_bottom = 31.0
+grow_horizontal = 0
+text = "cancel"
+
 [connection signal="pressed" from="block1/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="cancel" to="." method="_on_cancel_pressed"]

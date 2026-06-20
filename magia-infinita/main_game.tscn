@@ -1,21 +1,50 @@
 [gd_scene format=3 uid="uid://dak7h6lc532gs"]
 
 [ext_resource type="Script" uid="uid://cmq2ujylspex7" path="res://main_game.gd" id="1_1oj5k"]
-[ext_resource type="PackedScene" uid="uid://dqwevh5plt1hj" path="res://inventory.tscn" id="2_yx7mw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1oj5k"]
+bg_color = Color(0.95686275, 0.6, 0.6, 1)
+border_width_left = 80
+border_width_top = 80
+border_width_right = 80
+border_width_bottom = 80
+border_color = Color(0.23921569, 0.8, 0.8, 1)
+border_blend = true
 
 [node name="main_game" type="Control" unique_id=133559608]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_1oj5k")
 
-[node name="inventory" parent="." unique_id=1052778249 instance=ExtResource("2_yx7mw")]
+[node name="Panel" type="Panel" parent="." unique_id=1581837645]
 layout_mode = 1
-offset_left = 218.0
-offset_top = 129.0
-offset_right = 938.0
-offset_bottom = 489.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1oj5k")
+
+[node name="inventory" type="Button" parent="." unique_id=1862410153]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -83.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "inventory"
 
 [node name="lines" type="Control" parent="." unique_id=458421568]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[connection signal="pressed" from="inventory" to="." method="_on_inventory_pressed"]
