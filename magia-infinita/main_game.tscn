@@ -4,6 +4,3 @@
 
 [node name="main_game" type="Node2D" unique_id=1951637327]
 script = ExtResource("1_1oj5k")
-
-[node name="Line2D" type="Line2D" parent="." unique_id=1274709270]
-points = PackedVector2Array(10, 29, 83, 143, 329, 90)
