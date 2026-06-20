@@ -11,7 +11,7 @@ func _process(deltall):
 			i-=1
 		i+=1
 	else:
-		pass
+		print(get_children().size())
 func is_complete():
 	if(get_child(i).points[0].distance_to(get_child(i).points[get_child(i).points.size()-1])<5):
 			print("complete by itself")

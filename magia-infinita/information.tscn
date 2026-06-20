@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://bik62ycukksir"]
+
+[ext_resource type="Texture2D" uid="uid://cq0hmujlnh7so" path="res://icon.svg" id="1_lwf7n"]
+[ext_resource type="Script" uid="uid://c10bpbbjn3fn2" path="res://information.gd" id="1_oip44"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jas6l"]
+bg_color = Color(0.622554, 0.5355849, 0.87139183, 1)
+border_width_left = 400
+border_width_top = 400
+border_width_right = 400
+border_width_bottom = 400
+border_color = Color(0.2301046, 0.26312876, 0.5861098, 1)
+border_blend = true
+
+[node name="information" type="Control" unique_id=1531515262]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oip44")
+
+[node name="Panel" type="Panel" parent="." unique_id=2094945582]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jas6l")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=79458292]
+position = Vector2(133, 109)
+texture = ExtResource("1_lwf7n")
+
+[node name="About" type="Label" parent="." unique_id=1887195577]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.058
+anchor_top = 0.326
+anchor_right = 0.058
+anchor_bottom = 0.326
+offset_right = 50.0
+offset_bottom = 23.0
+text = "about:"
+
+[node name="Button" type="Button" parent="." unique_id=441320495]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -36.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "use"
