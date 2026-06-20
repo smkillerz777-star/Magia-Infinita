@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dak7h6lc532gs"]
 
 [ext_resource type="Script" uid="uid://cmq2ujylspex7" path="res://main_game.gd" id="1_1oj5k"]
+[ext_resource type="PackedScene" uid="uid://dyrb050hd1chi" path="res://3d_main_game.tscn" id="2_yx7mw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1oj5k"]
 bg_color = Color(0.95686275, 0.6, 0.6, 1)
@@ -46,5 +47,8 @@ text = "inventory"
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="3d_world" parent="." unique_id=1737870311 instance=ExtResource("2_yx7mw")]
+visible = false
 
 [connection signal="pressed" from="inventory" to="." method="_on_inventory_pressed"]
