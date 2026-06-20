@@ -1,5 +1,6 @@
 extends Control
 var i = 0
+var completed = 0
 func _ready() -> void:
 	var line = Line2D.new()
 func _process(_delta):
@@ -11,14 +12,20 @@ func _process(_delta):
 		if($lines.get_child(i).points.size()<30):
 			$lines.get_child(i).queue_free()
 		elif(is_complete()):
-			$lines.get_child(i).default_color = Color(0,0,0,1)
-			#resample($lines.get_child(i))
-			activate($lines.get_child(i))
-			i+=1
+			var line = $lines.get_child(i)
+			line.default_color = Color(0,0,0,1)
+			$lines.remove_child(line)
+			$completed.add_child(line)
+			add_child( normalization(resample(line),300))
+			#activate($lines.get_child(i))
 		else:
 			i+=1
-	else:
-		pass
+	if($completed.get_child_count()>(completed+1)):
+		if($completed.get_child_count()>=2):
+			completed+=1
+			for j in range(completed):
+				print(compare($completed.get_child(j),$completed.get_child(completed)))
+
 func is_complete():
 	if($lines.get_child(i).points[0].distance_to($lines.get_child(i).points[$lines.get_child(i).points.size()-1])<5):
 			return true
@@ -33,23 +40,22 @@ func activate(line: Line2D):
 	get_child(2).visible = false
 	get_child(3).visible = true
 	get_child(3).get_child(2).visible = true
-	var new = normalization(resample(line,15),300)
+	var new = normalization(resample(line),300)
 	get_child(3).get_child(2).get_child(0).add_child(new)
 
 #takes a line as an input and make the total vectice count to number
-func resample(line: Line2D,number):
+func resample(line: Line2D,number = 32):
 	var new_line : Line2D = Line2D.new()
 	var temp : PackedVector2Array = PackedVector2Array()
 	var path_length = 0.0
 	var j = 1
 	for point in line.points:
 		if(j==line.points.size()):
-			path_length += point.distance_to(line.points[0])
 			break
 		path_length += point.distance_to(line.points[j])
 		j+=1
 	temp.resize(number)
-	var dis = path_length/number
+	var interval = path_length/(number-1)
 	var d = 0.0
 	j = 1
 	var k=1
@@ -57,18 +63,23 @@ func resample(line: Line2D,number):
 	for point in line.points:
 		if(j==line.points.size()):
 			break
-		d += point.distance_to(line.points[j])
-		if(d>dis):
-			temp[k] = point
+		var next_point = line.points[j]
+		var distance = point.distance_to(next_point)
+		if(distance == 0):
+			j+=1
+			continue
+		d += distance
+		while(d>interval):
+			temp[k] = point.lerp(next_point,1-((d-interval)/distance))
+			d-=interval
 			k+=1
-			d=d-dis
 		j+=1
-	temp.append(line.points[0])
+	temp[number-1] = line.points[0]
 	new_line.points = temp
 	return new_line
 
-#normalizes the shape into a square of width 1 with corners (0,0),(1,0),(1,1) and (0,1)
-func normalization(line,multiplier):
+#normalizes the shape into a square of width multiplier with corners (0,0),(mutliplier,0),(multiplier,multiplier) and (0,multiplier)
+func normalization(line,multiplier=1):
 	var max_x = -INF
 	var max_y = -INF
 	var min_x = INF
@@ -89,3 +100,17 @@ func normalization(line,multiplier):
 	var new_line = Line2D.new()
 	new_line.points = temp
 	return new_line
+
+#this function compares the two lines that are input and written they being same chances
+func compare(line1,line2):
+	var min_dis = 0.2 * 32
+	var new_line1 = normalization(resample(line1))
+	var new_line2 = normalization(resample(line2))
+	var dis = 0.0
+	for j in new_line1.points.size():
+		dis += new_line1.points[j].distance_to(new_line2.points[j])
+	print(dis)
+	var prob = max(0.0,1.0-(dis/min_dis))
+	return prob
+		
+	

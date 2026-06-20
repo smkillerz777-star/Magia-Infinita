@@ -51,4 +51,9 @@ offset_bottom = 40.0
 [node name="3d_world" parent="." unique_id=1737870311 instance=ExtResource("2_yx7mw")]
 visible = false
 
+[node name="completed" type="Control" parent="." unique_id=1968794398]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
 [connection signal="pressed" from="inventory" to="." method="_on_inventory_pressed"]
