@@ -3,11 +3,19 @@
 [ext_resource type="Script" uid="uid://cmq2ujylspex7" path="res://main_game.gd" id="1_1oj5k"]
 [ext_resource type="PackedScene" uid="uid://dqwevh5plt1hj" path="res://inventory.tscn" id="2_yx7mw"]
 
-[node name="main_game" type="Node2D" unique_id=1951637327]
+[node name="main_game" type="Control" unique_id=133559608]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_1oj5k")
 
 [node name="inventory" parent="." unique_id=1052778249 instance=ExtResource("2_yx7mw")]
+layout_mode = 1
 offset_left = 218.0
 offset_top = 129.0
 offset_right = 938.0
 offset_bottom = 489.0
+
+[node name="lines" type="Control" parent="." unique_id=458421568]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
