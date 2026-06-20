@@ -1,5 +1,7 @@
 extends Control
 var i = 0
+func _ready() -> void:
+	var line = Line2D.new()
 func _process(_delta):
 	if(Input.is_action_just_pressed("draw")):
 		$lines.add_child(Line2D.new())
@@ -31,10 +33,8 @@ func activate(line: Line2D):
 	get_child(2).visible = false
 	get_child(3).visible = true
 	get_child(3).get_child(2).visible = true
-	var new = resample(line,63)
+	var new = normalization(resample(line,15),300)
 	get_child(3).get_child(2).get_child(0).add_child(new)
-	for point in new.points:
-		print(point)
 
 #takes a line as an input and make the total vectice count to number
 func resample(line: Line2D,number):
@@ -64,5 +64,28 @@ func resample(line: Line2D,number):
 			d=d-dis
 		j+=1
 	temp.append(line.points[0])
+	new_line.points = temp
+	return new_line
+
+#normalizes the shape into a square of width 1 with corners (0,0),(1,0),(1,1) and (0,1)
+func normalization(line,multiplier):
+	var max_x = -INF
+	var max_y = -INF
+	var min_x = INF
+	var min_y = INF
+	for point in line.points:
+		max_x = max(max_x,point.x)
+		max_y = max(max_y,point.y)
+		min_x = min(min_x,point.x)
+		min_y = min(min_y,point.y)
+	var shape_size : float = max(max_x-min_x,max_y-min_y)
+	var temp = PackedVector2Array()
+	var j = 0
+	temp.resize(line.points.size())
+	for point in line.points:
+		temp[j].x = (point.x - min_x)/shape_size*multiplier
+		temp[j].y = (point.y - min_y)/shape_size*multiplier
+		j+=1
+	var new_line = Line2D.new()
 	new_line.points = temp
 	return new_line
