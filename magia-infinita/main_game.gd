@@ -1,8 +1,6 @@
 extends Control
 var i = 0
 var completed = 0
-func _ready() -> void:
-	var line = Line2D.new()
 func _process(_delta):
 	if(Input.is_action_just_pressed("draw")):
 		$lines.add_child(Line2D.new())
@@ -15,9 +13,9 @@ func _process(_delta):
 			var line = $lines.get_child(i)
 			line.default_color = Color(0,0,0,1)
 			$lines.remove_child(line)
-			$completed.add_child(line)
-			add_child( normalization(resample(line),300))
-			#activate($lines.get_child(i))
+			#$completed.add_child(line)
+			#add_child( normalization(resample(line),300))
+			activate(line)
 		else:
 			i+=1
 	if($completed.get_child_count()>(completed+1)):
@@ -38,10 +36,12 @@ func activate(line: Line2D):
 	get_child(0).visible = false
 	get_child(1).visible = false
 	get_child(2).visible = false
-	get_child(3).visible = true
-	get_child(3).get_child(2).visible = true
-	var new = normalization(resample(line),300)
-	get_child(3).get_child(2).get_child(0).add_child(new)
+	get_child(3).visible = false
+	get_child(4).visible = true
+	var new = normalization(resample(line),360)
+	get_child(4).get_child(4).add_child(new)
+	get_child(4).get_child(4).get_child(0).position = Vector2(180,180)
+	glow(get_child(4).get_child(3),get_child(4).get_child(4))
 
 #takes a line as an input and make the total vectice count to number
 func resample(line: Line2D,number = 32):
@@ -113,4 +113,13 @@ func compare(line1,line2):
 	var prob = max(0.0,1.0-(dis/min_dis))
 	return prob
 		
-	
+func glow(mesh,subviewport):
+	var mat = mesh.get_active_material(0)
+	if mat:
+		var viewport_texture = subviewport.get_texture()
+		mat.albedo_texture = viewport_texture
+		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		mat.emission_enabled = true
+		mat.emission_texture = viewport_texture
+		mat.emission = Color(0.0, 0.5, 1.0)
+		mat.emission_energy_multiplier = 4
