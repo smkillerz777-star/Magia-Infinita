@@ -12,10 +12,10 @@ func _process(_delta):
 		elif(is_complete()):
 			var line = $lines.get_child(i)
 			line.default_color = Color(0,0,0,1)
+			print(is_circle(line))
 			#$lines.remove_child(line)
 			#$completed.add_child(line)
 			#add_child( normalization(resample(line),300))
-			$lines.add_child(rotate_to(line))
 			i+=1
 		else:
 			i+=1
@@ -75,26 +75,7 @@ func resample(line: Line2D,number = 32):
 
 #normalizes the shape into a square of width multiplier with corners (0,0),(mutliplier,0),(multiplier,multiplier) and (0,multiplier)
 func normalization(line,multiplier=1):
-	var max_x = -INF
-	var max_y = -INF
-	var min_x = INF
-	var min_y = INF
-	for point in line.points:
-		max_x = max(max_x,point.x)
-		max_y = max(max_y,point.y)
-		min_x = min(min_x,point.x)
-		min_y = min(min_y,point.y)
-	var shape_size : float = max(max_x-min_x,max_y-min_y)
-	var temp = PackedVector2Array()
-	var j = 0
-	temp.resize(line.points.size())
-	for point in line.points:
-		temp[j].x = (point.x - min_x)/shape_size*multiplier
-		temp[j].y = (point.y - min_y)/shape_size*multiplier
-		j+=1
-	var new_line = Line2D.new()
-	new_line.points = temp
-	return new_line
+	return translate_to(change_size(line,multiplier))
 
 func path_length(line):
 	var path_len = 0.0
@@ -118,10 +99,19 @@ func line_size(line):
 		min_y = min(min_y,point.y)
 	return max(max_x-min_x,max_y-min_y)
 #this function compares the two lines that are input and written they being same chances
-func compare(line1,line2):
+func compare(line1,line2,does_size_matter=false,does_orientation_matter=false):
 	var min_dis = 0.2 * 32
-	var new_line1 = normalization(resample(line1))
-	var new_line2 = normalization(resample(line2))
+	var new_line1 = resample(line1)
+	var new_line2 = resample(line2)
+	if(not does_size_matter):
+		new_line1 = normalization(new_line1)
+		new_line2 = normalization(new_line2)
+	else:
+		new_line1 = translate_to(new_line1)
+		new_line2 = translate_to(new_line2)
+	if(not does_orientation_matter):
+		new_line1 = rotate_to(new_line1)
+		new_line2 = rotate_to(new_line2)
 	var dis = 0.0
 	for j in new_line1.points.size():
 		dis += new_line1.points[j].distance_to(new_line2.points[j])
@@ -139,12 +129,23 @@ func glow(mesh,subviewport):
 		mat.emission_texture = viewport_texture
 		mat.emission = Color(0.0, 0.5, 1.0)
 		mat.emission_energy_multiplier = 4
-
+func mid_point(line):
+	var max_x = -INF
+	var max_y = -INF
+	var min_x = INF
+	var min_y = INF
+	for point in line.points:
+		max_x = max(max_x,point.x)
+		max_y = max(max_y,point.y)
+		min_x = min(min_x,point.x)
+		min_y = min(min_y,point.y)
+	return Vector2((max_x+min_x)/2,(max_y+min_y)/2)
 func angle_bet(point1,point2):
 	return atan2(point1.y-point2.y,point1.x-point2.x)
-func rotate_to(line,deg=0,about=Vector2(0,0)):
+func rotate_to(line,deg=0):
+	var about = mid_point(line)
 	var temp = []
-	var angle = deg_to_rad(deg)-angle_bet(line.points[0],about)
+	var angle = deg_to_rad(deg)-angle_bet(line.points[0],about)-PI/2
 	temp.resize(line.points.size())
 	var j = 0
 	for point in line.points:
@@ -160,13 +161,45 @@ func is_dot(line):
 
 func line_circle(radius=50):
 	var temp = []
-	temp.resize(361)
+	temp.resize(360)
 	for j in range(0,360):
 		temp[j] = Vector2(cos(deg_to_rad(j))*radius,sin(deg_to_rad(j))*radius)
-	temp[360] = temp[0]
+	#temp[360] = temp[0]
 	var line :Line2D = Line2D.new()
 	line.points = temp
 	return line
 
 func is_circle(line):
-	compare(line,line_circle())
+	if(compare(line,line_circle())>0.7):
+		return true
+	return false
+	
+
+func change_size(line,multiplier):
+	var shape_size = line_size(line)
+	var temp = PackedVector2Array()
+	var j = 0
+	temp.resize(line.points.size())
+	for point in line.points:
+		temp[j].x = point.x/shape_size*multiplier
+		temp[j].y = point.y/shape_size*multiplier
+		j+=1
+	var new_line = Line2D.new()
+	new_line.points = temp
+	return new_line
+func translate_to(line):
+	var min_x = INF
+	var min_y = INF
+	for point in line.points:
+		min_x = min(min_x,point.x)
+		min_y = min(min_y,point.y)
+	var temp = PackedVector2Array()
+	var j = 0
+	temp.resize(line.points.size())
+	for point in line.points:
+		temp[j].x = (point.x - min_x)
+		temp[j].y = (point.y - min_y)
+		j+=1
+	var new_line = Line2D.new()
+	new_line.points = temp
+	return new_line
