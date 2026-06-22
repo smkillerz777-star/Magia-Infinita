@@ -12,10 +12,11 @@ func _process(_delta):
 		elif(is_complete()):
 			var line = $lines.get_child(i)
 			line.default_color = Color(0,0,0,1)
-			$lines.remove_child(line)
+			#$lines.remove_child(line)
 			#$completed.add_child(line)
 			#add_child( normalization(resample(line),300))
-			activate(line)
+			$lines.add_child(rotate_to(line))
+			i+=1
 		else:
 			i+=1
 	if($completed.get_child_count()>(completed+1)):
@@ -47,17 +48,11 @@ func activate(line: Line2D):
 func resample(line: Line2D,number = 32):
 	var new_line : Line2D = Line2D.new()
 	var temp : PackedVector2Array = PackedVector2Array()
-	var path_length = 0.0
-	var j = 1
-	for point in line.points:
-		if(j==line.points.size()):
-			break
-		path_length += point.distance_to(line.points[j])
-		j+=1
 	temp.resize(number)
-	var interval = path_length/(number-1)
+	var path_len = path_length(line)
+	var interval = path_len/(number-1)
 	var d = 0.0
-	j = 1
+	var j = 1
 	var k=1
 	temp[0] = line.points[0]
 	for point in line.points:
@@ -101,6 +96,27 @@ func normalization(line,multiplier=1):
 	new_line.points = temp
 	return new_line
 
+func path_length(line):
+	var path_len = 0.0
+	var j = 1
+	for point in line.points:
+		if(j==line.points.size()):
+			break
+		path_len += point.distance_to(line.points[j])
+		j+=1
+	return path_len
+
+func line_size(line):
+	var max_x = -INF
+	var max_y = -INF
+	var min_x = INF
+	var min_y = INF
+	for point in line.points:
+		max_x = max(max_x,point.x)
+		max_y = max(max_y,point.y)
+		min_x = min(min_x,point.x)
+		min_y = min(min_y,point.y)
+	return max(max_x-min_x,max_y-min_y)
 #this function compares the two lines that are input and written they being same chances
 func compare(line1,line2):
 	var min_dis = 0.2 * 32
@@ -123,3 +139,34 @@ func glow(mesh,subviewport):
 		mat.emission_texture = viewport_texture
 		mat.emission = Color(0.0, 0.5, 1.0)
 		mat.emission_energy_multiplier = 4
+
+func angle_bet(point1,point2):
+	return atan2(point1.y-point2.y,point1.x-point2.x)
+func rotate_to(line,deg=0,about=Vector2(0,0)):
+	var temp = []
+	var angle = deg_to_rad(deg)-angle_bet(line.points[0],about)
+	temp.resize(line.points.size())
+	var j = 0
+	for point in line.points:
+		temp[j] = Vector2(about.x + (point.x - about.x)*cos(angle) - (point.y - about.y)*sin(angle),about.y + (point.x - about.x)*sin(angle) + (point.y - about.y)*cos(angle))
+		j+=1
+	var new_line = Line2D.new()
+	new_line.points = temp
+	return new_line
+func is_dot(line):
+	if(line_size(line)<15):
+		return true
+	return false
+
+func line_circle(radius=50):
+	var temp = []
+	temp.resize(361)
+	for j in range(0,360):
+		temp[j] = Vector2(cos(deg_to_rad(j))*radius,sin(deg_to_rad(j))*radius)
+	temp[360] = temp[0]
+	var line :Line2D = Line2D.new()
+	line.points = temp
+	return line
+
+func is_circle(line):
+	compare(line,line_circle())
