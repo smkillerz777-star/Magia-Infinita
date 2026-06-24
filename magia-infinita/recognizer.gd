@@ -1,88 +1,73 @@
 extends Node
-func translate_to_origin(points : customLine2D):
-	var temp = []
-	temp.resize(points.size())
-	var k = 0
-	var centroid = Vector2(0,0)
-	for point in points:
+class_name Recognizer
+static func translate_to_origin(points : Array[Point]):
+	var temp : Array[Point] = points.duplicate()
+	var centroid : Vector2 = Vector2(0,0)
+	for point in temp:
 		centroid.x += point.x
 		centroid.y += point.y
-		temp[k] = Point.new(point.x,point.y,point.stroke_id)
-		k+=1
 	centroid /= points.size()
 	for point in temp:
 		point.x -= centroid.x
 		point.y -= centroid.y
 	return temp
 
-func scale(points):
-	var temp = []
-	temp.resize(points.size())
-	var max_x = -INF
-	var max_y = -INF
-	var min_x = INF
-	var min_y = INF
-	var k = 0
-	for point in points:
+static func scale(points : Array[Point]):
+	var temp : Array[Point] = points.duplicate()
+	print(temp.size(),"hi")
+	var max_x : float = -INF
+	var max_y : float = -INF
+	var min_x : float= INF
+	var min_y : float= INF
+	for point in temp:
 		max_x = max(max_x,point.x)
 		max_y = max(max_y,point.y)
 		min_x = min(min_x,point.x)
 		min_y = min(min_y,point.y)
-		temp[k] = Point.new(point.x,point.y,point.stroke_id)
-		k+=1
-	var scale_factor = max(max_x-min_x,max_y-min_y)
-	var corner = Vector2(min_x,min_y)
-	k=0
+	var scale_factor : float= max(max_x-min_x,max_y-min_y)
 	for point in temp:
-		point.x = (point.x-corner.x)/scale_factor
-		point.y = (point.y-corner.y)/scale_factor
+		point.x = (point.x-min_x)/scale_factor
+		point.y = (point.y-min_y)/scale_factor
 	return temp
 
-func path_length(points):
+static func path_length(points : Array[Point]):
 	var d = 0.0
 	for i in range(1,points.size()):
 		if(points[i-1].stroke_id==points[i].stroke_id):
 			d += points[i-1].distance_to(points[i])
 	return d
 
-func resample(points,n):
+static func resample(points : Array[Point],n):
 	var interval = path_length(points)/(n-1)
 	var dis = 0.0
-	var temp = []
-	var k = 0
-	temp.resize(points.size())
-	for point in points:
-		temp[k] = point
-		k+=1
-	var new_points : Array[Point] = []
-	new_points.resize(n)
-	k = 0
+	var temp : Array[Point] = points.duplicate()
+	var new_points : Array[Point] = [temp[0]]
 	var i = 1
 	while i < temp.size():
-		if(temp[i-1].stroke_id==temp[i]):
+		if(temp[i-1].stroke_id==temp[i].stroke_id):
 			var d = temp[i-1].distance_to(temp[i])
-			if((dis+d)>interval):
-				var qx = temp[i-1].x + ((interval-dis)/d)*(temp[i].x-temp[i-1].x)
-				var qy = temp[i-1].y + ((interval-dis)/d)*(temp[i].y-temp[i-1].y)
-				var q = Point.new(qx,qy,0)
-				new_points[k] = q
+			if(d==0.0):
+				pass
+			elif((dis+d)>=interval):
+				var t = (interval-dis)/d
+				var q = Point.new(lerp(temp[i-1].x, temp[i].x, t),lerp(temp[i-1].y, temp[i].y, t),temp[i].stroke_id)
+				new_points.append(q)
 				temp.insert(i, q)
-				k+=1
-				dis = dis + d - interval
+				dis = 0.0
 			else:
 				dis += d
-				i+=1
-		else:
-			i+=1
+		i+=1
+	new_points.resize(n)
+	new_points[n-1] = points[points.size()-1]
 	return new_points
 
-func normalize(points,n):
-	var resampled_points = resample(points, n)
+static func normalize(points : Array[Point],n):
+	var resampled_points : Array[Point] = resample(points, n)
 	resampled_points = scale(resampled_points)
 	resampled_points = translate_to_origin(resampled_points)
 	return resampled_points
 
-func cloud_distance(points,template,n,start):
+static func cloud_distance(points : Array[Point],template : Array[Point],n,start):
 	var matched : Array[bool] = []
 	matched.resize(n)
 	var sum = 0.0
@@ -104,7 +89,7 @@ func cloud_distance(points,template,n,start):
 			break
 	return sum
 
-func greedy_cloud_match(points,template,n):
+static func greedy_cloud_match(points : Array[Point],template : Array[Point],n):
 	var epsilon = 0.5
 	var step = max(1,int(pow(n,1-epsilon)))
 	var minimum = INF
@@ -116,7 +101,7 @@ func greedy_cloud_match(points,template,n):
 		i += step
 	return minimum
 
-func p_recognizer(points,templates):
+static func p_recognizer(points : Array[Point],templates):
 	var n = 32
 	var normalized_points = normalize(points,n)
 	var score = INF

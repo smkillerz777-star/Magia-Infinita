@@ -2,37 +2,38 @@ extends Control
 var i = 0
 var completed = 0
 var first = true
-func _ready() -> void:
-	draw_template(Symbols.direction_sign)
+#func _ready() -> void:
+	#draw_template(Symbols.direction_sign)
 func _process(_delta):
-	if(Input.is_action_just_pressed("draw")):
-		$lines.add_child(customLine2D.new())
-	elif(Input.is_action_pressed("draw")):
-		$lines.get_child(i).add_point((get_global_mouse_position()))
-		if(is_complete($lines.get_child(i)) and $lines.get_child(i).points.size()>50 and not is_dot($lines.get_child(i))):
-			$lines.get_child(i).category = get_category($lines.get_child(i))
-			create_new($lines.get_child(i))
+	if(get_global_mouse_position().y<670):
+		if(Input.is_action_just_pressed("draw")):
 			$lines.add_child(customLine2D.new())
-		elif($lines.get_child(i).points.size()>40 and line_size($lines.get_child(i))>30):
-			if($lines.get_child(i).category == "default"):
+		elif(Input.is_action_pressed("draw")):
+			$lines.get_child(i).add_point((get_global_mouse_position()))
+			if(is_complete($lines.get_child(i)) and $lines.get_child(i).points.size()>50 and not is_dot($lines.get_child(i))):
 				$lines.get_child(i).category = get_category($lines.get_child(i))
-			else:
-				if(get_category($lines.get_child(i))=="circle" and $lines.get_child(i).category=="partial circle"):
-					$lines.get_child(i).category="circle"
-				elif((get_category($lines.get_child(i)) != $lines.get_child(i).category)):
-					create_new($lines.get_child(i))
-					$lines.add_child(customLine2D.new())
+				create_new($lines.get_child(i))
+				$lines.add_child(customLine2D.new())
+			elif($lines.get_child(i).points.size()>40 and line_size($lines.get_child(i))>30):
+				if($lines.get_child(i).category == "default"):
+					$lines.get_child(i).category = get_category($lines.get_child(i))
+				else:
+					if(get_category($lines.get_child(i))=="circle" and $lines.get_child(i).category=="partial circle"):
+						$lines.get_child(i).category="circle"
+					elif((get_category($lines.get_child(i)) != $lines.get_child(i).category)):
+						create_new($lines.get_child(i))
+						$lines.add_child(customLine2D.new())
 
-	elif(Input.is_action_just_released("draw")):
-		var line = $lines.get_child(i)
-		if($lines.get_child(i).points.size()<30):
-			$lines.get_child(i).queue_free()
-		elif(is_dot(line)):
-			line.category = "dot"
-			create_new(line)
-		else:
-			line.category = get_category(line)
-			create_new(line)
+		elif(Input.is_action_just_released("draw")):
+			var line = $lines.get_child(i)
+			if($lines.get_child(i).points.size()<30):
+				$lines.get_child(i).queue_free()
+			elif(is_dot(line)):
+				line.category = "dot"
+				create_new(line)
+			else:
+				line.category = get_category(line)
+				create_new(line)
 
 func is_complete(line):
 	if(line.points[0].distance_to(line.points[line.points.size()-1])<5):
@@ -283,3 +284,17 @@ func draw_template(template):
 	new_line = translate_to(new_line)
 	$lines.add_child(new_line)
 	i+=1
+
+
+func _on_submit_pressed() -> void:
+	var points : Array[Point] = []
+	print($lines.get_child_count())
+	for k in range(0,$lines.get_child_count()):
+		if($lines.get_child(k).is_queued_for_deletion()):
+			continue
+		else:
+			print($lines.get_child(k).name)
+			for point in $lines.get_child(k).points:
+				points.append(Point.new(point.x,point.y,k))
+	var templates = [Symbols.direction_sign]
+	print(Recognizer.p_recognizer(points,templates))
