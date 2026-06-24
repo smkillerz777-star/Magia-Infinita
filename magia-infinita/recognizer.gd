@@ -106,10 +106,15 @@ static func p_recognizer(points : Array[Point],templates):
 	var normalized_points = normalize(points,n)
 	var score = INF
 	var result = 0
+	var i = 0
+	var angle = 0
 	for template in templates:
 		var normalized_template = normalize(template,n)
 		var d = greedy_cloud_match(normalized_points,normalized_template,n)
 		if(score>d):
 			score = d
 			result = template
-	return {"template": result, "score": score}
+			angle = i
+		i+=5
+	print(result)
+	return {"angle": angle,"prob" : max(0.0,1.0-score/(0.2*32))}

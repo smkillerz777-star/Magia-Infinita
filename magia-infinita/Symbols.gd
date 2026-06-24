@@ -366,3 +366,24 @@ Point.new(150.0, 0.0,0),
 Point.new(80.0, 40.0,0),
 Point.new(150.0, 0.0,0),
 Point.new(80.0, -40.0,0)]
+static func get_templates():
+	var symbol = direction_sign
+	var templates = [symbol]
+	var i = 0
+	while(i<360):
+		templates.append(rotate(symbol,i))
+		i+=5
+	return templates
+static func rotate(points,deg=0):
+	var temp : Array[Point] = points.duplicate()
+	var centroid : Vector2 = Vector2(0,0)
+	for point in temp:
+		centroid.x += point.x
+		centroid.y += point.y
+	centroid /= points.size()
+	var angle = deg_to_rad(deg)
+	var j = 0
+	for point in points:
+		temp[j] = Point.new(centroid.x + (point.x - centroid.x)*cos(angle) - (point.y - centroid.y)*sin(angle),centroid.y + (point.x - centroid.x)*sin(angle) + (point.y - centroid.y)*cos(angle),point.stroke_id)
+		j+=1
+	return temp
