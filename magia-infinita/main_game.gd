@@ -2,17 +2,17 @@ extends Control
 var i = 0
 var completed = 0
 var first = true
+func _ready() -> void:
+	draw_template(Symbols.direction_sign)
 func _process(_delta):
 	if(Input.is_action_just_pressed("draw")):
 		$lines.add_child(customLine2D.new())
 	elif(Input.is_action_pressed("draw")):
 		$lines.get_child(i).add_point((get_global_mouse_position()))
 		if(is_complete($lines.get_child(i)) and $lines.get_child(i).points.size()>50 and not is_dot($lines.get_child(i))):
-			$lines.get_child(i).default_color = Color(0,0,0,1)
 			$lines.get_child(i).category = get_category($lines.get_child(i))
-			print($lines.get_child(i).category)
-			$lines.add_child(customLine2D.new())  
-			i+=1
+			create_new($lines.get_child(i))
+			$lines.add_child(customLine2D.new())
 		elif($lines.get_child(i).points.size()>40 and line_size($lines.get_child(i))>30):
 			if($lines.get_child(i).category == "default"):
 				$lines.get_child(i).category = get_category($lines.get_child(i))
@@ -20,10 +20,8 @@ func _process(_delta):
 				if(get_category($lines.get_child(i))=="circle" and $lines.get_child(i).category=="partial circle"):
 					$lines.get_child(i).category="circle"
 				elif((get_category($lines.get_child(i)) != $lines.get_child(i).category)):
-					$lines.get_child(i).default_color = Color(0,0,0,1)
-					print($lines.get_child(i).category)
+					create_new($lines.get_child(i))
 					$lines.add_child(customLine2D.new())
-					i+=1
 
 	elif(Input.is_action_just_released("draw")):
 		var line = $lines.get_child(i)
@@ -31,20 +29,22 @@ func _process(_delta):
 			$lines.get_child(i).queue_free()
 		elif(is_dot(line)):
 			line.category = "dot"
-			print(line.category)
-			line.default_color = Color(0,0,0,1)
-			i+=1
+			create_new(line)
 		else:
 			line.category = get_category(line)
-			print(line.category)
-			line.default_color = Color(0,0,0,1)
-			i+=1
+			create_new(line)
 
 func is_complete(line):
 	if(line.points[0].distance_to(line.points[line.points.size()-1])<5):
 			return true
 
-
+func create_new(line):
+	print(line.category)
+	line.default_color = Color(0,0,0,1)
+	if(line.category=="default"):
+		line.queue_free()
+		i-=1
+	i+=1
 func _on_inventory_pressed() -> void:
 	add_child(load("res://inventory.tscn").instantiate())
 
@@ -180,15 +180,15 @@ func is_dot(line):
 
 func line_circle(radius=50):
 	var temp = []
-	temp.resize(360)
+	temp.resize(361)
 	for j in range(0,360):
 		temp[j] = Vector2(cos(deg_to_rad(j))*radius,sin(deg_to_rad(j))*radius)
-	#temp[360] = temp[0]
+	temp[360] = temp[0]
 	var line :customLine2D = customLine2D.new()
 	line.points = temp
 	return line
 
-func is_circle(line,prob=0.65):
+func is_circle(line,prob=0.75):
 	if(compare(line,line_circle())>prob):
 		return true
 	return false
@@ -258,3 +258,28 @@ func get_category(line):
 	elif(is_complete(line)):
 		return "complete"
 	return "default"
+
+func is_direction_symbol(lines):
+	var circle = null
+	var circle_count = 0
+	var straight_main = null
+	var straight_side1 = null
+	var straight_side2 = null
+	
+	for line in lines:
+		if(line.category=="circle" or line.category=="partial circle"):
+			circle_count += 1
+			circle = line
+		
+func draw_template(template):
+	var temp : Array[Vector2]= []
+	temp.resize(template.size())
+	var k = 0
+	for point in template:
+		temp[k] = Vector2(point.x,point.y)
+		k+=1
+	var new_line = Line2D.new()
+	new_line.points = temp
+	new_line = translate_to(new_line)
+	$lines.add_child(new_line)
+	i+=1
