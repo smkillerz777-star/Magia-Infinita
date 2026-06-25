@@ -1,47 +1,62 @@
 extends Node
 class_name Recognizer
 static func translate_to_origin(points : Array[Point]):
-	var temp : Array[Point] = points.duplicate()
+	var temp : Array[Point] = []
+	temp.resize(points.size())
 	var centroid : Vector2 = Vector2(0,0)
-	for point in temp:
+	for point in points:
 		centroid.x += point.x
 		centroid.y += point.y
 	centroid /= points.size()
-	for point in temp:
-		point.x -= centroid.x
-		point.y -= centroid.y
+	var i = 0
+	for point in points:
+		temp[i] = Point.new(point.x - centroid.x,point.y - centroid.y,point.stroke_id)
+		i+=1
 	return temp
 
-static func scale(points : Array[Point]):
-	var temp : Array[Point] = points.duplicate()
-	print(temp.size(),"hi")
+static func scale(points : Array[Point],multiplier=1):
+	var temp : Array[Point] = []
+	temp.resize(points.size())
 	var max_x : float = -INF
 	var max_y : float = -INF
 	var min_x : float= INF
 	var min_y : float= INF
-	for point in temp:
+	for point in points:
 		max_x = max(max_x,point.x)
 		max_y = max(max_y,point.y)
 		min_x = min(min_x,point.x)
 		min_y = min(min_y,point.y)
 	var scale_factor : float= max(max_x-min_x,max_y-min_y)
-	for point in temp:
-		point.x = (point.x-min_x)/scale_factor
-		point.y = (point.y-min_y)/scale_factor
+	var i = 0
+	for point in points:
+		temp[i] = Point.new((point.x-min_x)/scale_factor*multiplier, (point.y-min_y)/scale_factor*multiplier,point.stroke_id)
+		i+=1
 	return temp
 
 static func path_length(points : Array[Point]):
 	var d = 0.0
 	for i in range(1,points.size()):
 		if(points[i-1].stroke_id==points[i].stroke_id):
+			print(points[i-1].distance_to(points[i]))
 			d += points[i-1].distance_to(points[i])
+	print(d)
 	return d
 
 static func resample(points : Array[Point],n):
+	var temp : Array[Point] = points.duplicate()
+	if(points.is_empty()):                                   
+		temp.resize(n)
+		for i in range(n):
+			temp[i] = Point.new(INF,INF,0)
+		return temp
+	if(points.size()==1):
+		temp.resize(n)
+		for i in range(n):
+			temp[i] = Point.new(points[0].x,points[0].y,points[0].stroke_id)
+		return temp
 	var interval = path_length(points)/(n-1)
 	var dis = 0.0
-	var temp : Array[Point] = points.duplicate()
-	var new_points : Array[Point] = [temp[0]]
+	var new_points : Array[Point] = [Point.new(temp[0].x,temp[0].y,temp[0].stroke_id)]
 	var i = 1
 	while i < temp.size():
 		if(temp[i-1].stroke_id==temp[i].stroke_id):
@@ -57,8 +72,16 @@ static func resample(points : Array[Point],n):
 			else:
 				dis += d
 		i+=1
+	for point in new_points:
+		print("info:")
+		print(point.x)
+		print(point.y)
+	if(new_points.size()!=n):
+		print("error size:",new_points.size())
+	else:
+		print("size is good")
 	new_points.resize(n)
-	new_points[n-1] = points[points.size()-1]
+	new_points[n-1] = Point.new(points[points.size()-1].x,points[points.size()-1].y,points[points.size()-1].stroke_id)
 	return new_points
 
 static func normalize(points : Array[Point],n):
@@ -116,5 +139,4 @@ static func p_recognizer(points : Array[Point],templates):
 			result = template
 			angle = i
 		i+=5
-	print(result)
-	return {"angle": angle,"prob" : max(0.0,1.0-score/(0.2*32))}
+	return {"template": result,"prob" : max(0.0,1.0-score/(0.2*32))}

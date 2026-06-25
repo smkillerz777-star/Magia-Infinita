@@ -2,10 +2,6 @@ extends Control
 var i = 0
 var completed = 0
 var first = true
-func _ready() -> void:
-	var line = customLine2D.new()
-	line.from_point(Symbols.direction_sign)
-	$lines.add_child(line)
 func _process(_delta):
 	if(get_global_mouse_position().y<670):
 		if(Input.is_action_just_pressed("draw")):
@@ -263,7 +259,6 @@ func get_category(line):
 	return "default"
 		
 func draw_template(template):
-	template = Recognizer.normalize(template,1000)
 	var temp : Array[Vector2]= []
 	temp.resize(template.size())
 	var k = 0
@@ -273,19 +268,23 @@ func draw_template(template):
 	var new_line = Line2D.new()
 	new_line.points = temp
 	$lines.add_child(new_line)
+	$lines.get_child(i).position = Vector2(400,400)
 	i+=1
 
 
 func _on_submit_pressed() -> void:
 	var points : Array[Point] = []
-	print($lines.get_child_count())
 	for k in range(0,$lines.get_child_count()):
 		if($lines.get_child(k).is_queued_for_deletion()):
 			continue
 		else:
-			print($lines.get_child(k).name)
 			for point in $lines.get_child(k).points:
 				points.append(Point.new(point.x,point.y,k))
 	var templates = Symbols.get_templates()
-	#var templates = [Symbols.direction_sign]
-	print(Recognizer.p_recognizer(points,templates))
+	var result = Recognizer.p_recognizer(points,templates)
+	if(result["prob"]!=0):
+		print(result["prob"])
+		draw_template(result["template"])
+	else:
+		print("nothing matched")
+	#draw_template(templates[10])

@@ -369,15 +369,18 @@ Point.new(80.0, -40.0,1)]
 static func get_templates():
 	var symbol = direction_sign
 	var templates = [symbol]
-	var i = 0
+	var i = 15
 	while(i<360):
 		templates.append(rotate(symbol,i))
-		i+=5
+		i+=15
 	return templates
-static func rotate(points,deg=0):
-	var temp : Array[Point] = points.duplicate()
+static func rotate(points : Array[Point],deg : float =0.0):
+	if points.is_empty():
+		return []
+	var temp : Array[Point] = []
+	temp.resize(points.size())
 	var centroid : Vector2 = Vector2(0,0)
-	for point in temp:
+	for point in points:
 		centroid.x += point.x
 		centroid.y += point.y
 	centroid /= points.size()
