@@ -2,8 +2,10 @@ extends Control
 var i = 0
 var completed = 0
 var first = true
-#func _ready() -> void:
-	#draw_template(Symbols.direction_sign)
+func _ready() -> void:
+	var line = customLine2D.new()
+	line.from_point(Symbols.direction_sign)
+	$lines.add_child(line)
 func _process(_delta):
 	if(get_global_mouse_position().y<670):
 		if(Input.is_action_just_pressed("draw")):

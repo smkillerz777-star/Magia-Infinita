@@ -364,8 +364,8 @@ Point.new(49.99239, -0.87262,0),
 Point.new(50.0, 0.0,0),
 Point.new(150.0, 0.0,0),
 Point.new(80.0, 40.0,0),
-Point.new(150.0, 0.0,0),
-Point.new(80.0, -40.0,0)]
+Point.new(150.0, 0.0,1),
+Point.new(80.0, -40.0,1)]
 static func get_templates():
 	var symbol = direction_sign
 	var templates = [symbol]
