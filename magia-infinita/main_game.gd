@@ -287,4 +287,9 @@ func _on_submit_pressed() -> void:
 		draw_template(result["template"])
 	else:
 		print("nothing matched")
-	#draw_template(templates[10])
+
+
+func _on_clear_pressed() -> void:
+	for line in $lines.get_children():
+		line.queue_free()
+	i = 0

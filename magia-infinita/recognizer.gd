@@ -37,9 +37,7 @@ static func path_length(points : Array[Point]):
 	var d = 0.0
 	for i in range(1,points.size()):
 		if(points[i-1].stroke_id==points[i].stroke_id):
-			print(points[i-1].distance_to(points[i]))
 			d += points[i-1].distance_to(points[i])
-	print(d)
 	return d
 
 static func resample(points : Array[Point],n):
@@ -72,14 +70,6 @@ static func resample(points : Array[Point],n):
 			else:
 				dis += d
 		i+=1
-	for point in new_points:
-		print("info:")
-		print(point.x)
-		print(point.y)
-	if(new_points.size()!=n):
-		print("error size:",new_points.size())
-	else:
-		print("size is good")
 	new_points.resize(n)
 	new_points[n-1] = Point.new(points[points.size()-1].x,points[points.size()-1].y,points[points.size()-1].stroke_id)
 	return new_points
@@ -125,18 +115,14 @@ static func greedy_cloud_match(points : Array[Point],template : Array[Point],n):
 	return minimum
 
 static func p_recognizer(points : Array[Point],templates):
-	var n = 32
+	var n = 64
 	var normalized_points = normalize(points,n)
 	var score = INF
 	var result = 0
-	var i = 0
-	var angle = 0
 	for template in templates:
 		var normalized_template = normalize(template,n)
 		var d = greedy_cloud_match(normalized_points,normalized_template,n)
 		if(score>d):
 			score = d
 			result = template
-			angle = i
-		i+=5
-	return {"template": result,"prob" : max(0.0,1.0-score/(0.2*32))}
+	return {"template": result,"prob" : max(0.0,1.0-score/(0.2*n))}
