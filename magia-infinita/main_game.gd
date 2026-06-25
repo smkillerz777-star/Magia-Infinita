@@ -113,6 +113,19 @@ func line_size(line):
 		min_y = min(min_y,point.y)
 	return max(max_x-min_x,max_y-min_y)
 
+func lines_size(lines):
+	var max_x = -INF
+	var max_y = -INF
+	var min_x = INF
+	var min_y = INF
+	for line in lines:
+		for point in line.points:
+			max_x = max(max_x,point.x)
+			max_y = max(max_y,point.y)
+			min_x = min(min_x,point.x)
+			min_y = min(min_y,point.y)
+	return Vector2(max_x,max_y).distance_to(Vector2(min_x,min_y))
+
 #this function compares the two lines that are input and written they being same chances
 func compare(line1,line2,does_size_matter=false,does_orientation_matter=false):
 	var min_dis = 0.2 * 32
@@ -271,23 +284,38 @@ func draw_template(template):
 	$lines.get_child(i).position = Vector2(400,400)
 	i+=1
 
+func organize(lines):
+	var dis = lines_size(lines)/2
+	print(dis)
+	var array_points = []
+	var points : Array[Point] = []
+	while(not lines.is_empty()):
+		var main_line = lines.pop_front()
+		for point in main_line.points:
+					points.append(Point.new(point.x,point.y,0))
+		var remaining_lines =[]
+		for k in range(0,lines.size()):
+			if(mid_point(main_line).distance_to(mid_point(lines[k]))<dis):
+				for point in lines[k].points:
+					points.append(Point.new(point.x,point.y,k+1))
+			else:
+				remaining_lines.append(lines[k])
+		array_points.append(points)
+		points = []
+		lines =remaining_lines
+	return array_points
 
 func _on_submit_pressed() -> void:
-	var points : Array[Point] = []
-	for k in range(0,$lines.get_child_count()):
-		if($lines.get_child(k).is_queued_for_deletion()):
-			continue
-		else:
-			for point in $lines.get_child(k).points:
-				points.append(Point.new(point.x,point.y,k))
 	var templates = Symbols.get_templates()
-	var result = Recognizer.p_recognizer(points,templates)
-	if(result["prob"]!=0):
-		print(result["name"])
-		print(result["prob"])
-		draw_template(result["template"])
-	else:
-		print("nothing matched")
+	var array_points = organize($lines.get_children().filter(func(line): return not line.is_queued_for_deletion()))
+	for pointss in array_points:
+		var result = Recognizer.p_recognizer(pointss,templates)
+		if(result["prob"]!=0):
+			print(result["name"])
+			print(result["prob"])
+			draw_template(result["template"])
+		else:
+			print("nothing matched")
 
 
 func _on_clear_pressed() -> void:
