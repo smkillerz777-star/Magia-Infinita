@@ -283,6 +283,7 @@ func _on_submit_pressed() -> void:
 	var templates = Symbols.get_templates()
 	var result = Recognizer.p_recognizer(points,templates)
 	if(result["prob"]!=0):
+		print(result["name"])
 		print(result["prob"])
 		draw_template(result["template"])
 	else:

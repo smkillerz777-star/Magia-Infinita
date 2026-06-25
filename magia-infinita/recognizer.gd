@@ -125,4 +125,23 @@ static func p_recognizer(points : Array[Point],templates):
 		if(score>d):
 			score = d
 			result = template
-	return {"template": result,"prob" : max(0.0,1.0-score/(0.2*n))}
+	return {"name": name_template(result),"template": result,"prob" : max(0.0,1.0-score/(0.2*n))}
+
+static func name_template(temp):
+	var con = contains(Symbols.get_templates(),temp)
+	if(con!=-1):
+		return "direction_sign" + str(con)
+	else:
+		return "not found"
+static func contains(templates,temp):
+	for i in range(templates.size()):
+		if(is_identical(templates[i],temp)):
+			return i
+	return -1
+static func is_identical(t1,t2):
+	if(t1.size()!=t2.size()):
+		return false
+	for i in range(t1.size()):
+		if((t1[i].x!=t2[i].x) or (t1[i].y!=t2[i].y)):
+			return false
+	return true
