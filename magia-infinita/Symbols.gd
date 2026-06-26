@@ -408,6 +408,7 @@ Point.new(0.0, 0.0,0),
 Point.new(40.0, -40.0,0),
 Point.new(80.0, 0.0,0)
 ]
+static var all_symbols = ["direction_sign","column_sign","levitation_sign","pull","crush","region"]
 static func get_templates():
 	var symbols = [direction_sign,column_sign,levitation_sign,pull,crush,region]
 	var templates = []

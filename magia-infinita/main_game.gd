@@ -104,19 +104,19 @@ func path_length(line):
 		j+=1
 	return path_len
 
-func line_size(line):
+func line_size(points):
 	var max_x = -INF
 	var max_y = -INF
 	var min_x = INF
 	var min_y = INF
-	for point in line.points:
+	for point in points:
 		max_x = max(max_x,point.x)
 		max_y = max(max_y,point.y)
 		min_x = min(min_x,point.x)
 		min_y = min(min_y,point.y)
 	return max(max_x-min_x,max_y-min_y)
 
-func lines_size(lines):
+func lines_midpoint(lines):
 	var max_x = -INF
 	var max_y = -INF
 	var min_x = INF
@@ -127,7 +127,7 @@ func lines_size(lines):
 			max_y = max(max_y,point.y)
 			min_x = min(min_x,point.x)
 			min_y = min(min_y,point.y)
-	return Vector2(max_x,max_y).distance_to(Vector2(min_x,min_y))
+	return Vector2((min_x+max_x)/2,(min_y+max_y)/2)
 
 #this function compares the two lines that are input and written they being same chances
 func compare(line1,line2,does_size_matter=false,does_orientation_matter=false):
@@ -160,12 +160,12 @@ func glow(mesh,subviewport):
 		mat.emission = Color(0.0, 0.5, 1.0)
 		mat.emission_energy_multiplier = 4
 
-func mid_point(line):
+func mid_point(points):
 	var max_x = -INF
 	var max_y = -INF
 	var min_x = INF
 	var min_y = INF
-	for point in line.points:
+	for point in points:
 		max_x = max(max_x,point.x)
 		max_y = max(max_y,point.y)
 		min_x = min(min_x,point.x)
@@ -311,18 +311,68 @@ func organize(lines : Array):
 	return array_points
 
 func _on_submit_pressed() -> void:
+	var magic_circle : Array[String] = []
 	var templates = Symbols.get_templates()
 	var array_points = organize($lines.get_children().filter(func(line): return not line.is_queued_for_deletion()))
+	var coordinates : Array[Vector2] = []
+	var radius = 0
 	for pointss in array_points:
 		var result = Recognizer.p_recognizer(pointss,templates)
-		if(result["prob"]!=0):
-			print(result["name"])
-			print(result["prob"])
+		if(result["prob"]>=0.30):
+			magic_circle.append(result["name"])
+			coordinates.append(mid_point(pointss))
+			if(result["name"]=="circle"):
+				radius = line_size(result["template"])
 			draw_template(result["template"])
-		else:
-			print("nothing matched")
-	#draw_template(templates[30])
+	if(is_magic_circle(magic_circle,coordinates,radius)):
+		print("this is a valid magic circle")
+	else:
+		print("this is not a valid magic circle")
 
+func is_magic_circle(magic_circle : Array[String],coordinates : Array[Vector2],radius):
+	if(magic_circle.size()%4!=1 or not magic_circle.has("circle")):
+		return false
+	var center: Vector2 = coordinates.pop_at(magic_circle.find("circle"))
+	magic_circle.erase("circle")
+	if(magic_circle.is_empty()):
+		print("empty circle: no effect")
+		return true
+	var count : Array[int]= []
+	var angles : Array = []
+	count.resize(Symbols.all_symbols.size())
+	angles.resize(Symbols.all_symbols.size())
+	for j in range(angles.size()):
+		angles[j] = []
+		count[j] = 0
+	for num in count:
+		num = 0
+	for symbol in magic_circle:
+		var name_symbol = symbol.substr(0,symbol.length()-1)
+		for j in range(Symbols.all_symbols.size()):
+			if(name_symbol==Symbols.all_symbols[j]):
+				angles[j].append(int(symbol.substr(symbol.length()-1)))
+				count[j]+=1
+	for num in count:
+		if(num%4!=0):
+			return false
+	for array in angles:
+		var mask = 0
+		for val in array:
+			mask |= (1 << val)
+		if(array.size()<4 or array.size()>8):
+			continue
+		if(array.size() == 8) and (mask!=255):
+			print(mask,"size is 8")
+			return false
+		else:
+			if(mask!=85 and mask!=170):
+				print(mask)
+				return false
+	for point in coordinates:
+		if(point.distance_to(center)>=radius):
+			print("symbol is outside the circle")
+			return false
+	return true
 
 func _on_clear_pressed() -> void:
 	for line in $lines.get_children():
