@@ -26,16 +26,19 @@ func _process(_delta):
 			var line = $lines.get_child(i)
 			if($lines.get_child(i).points.size()<30):
 				$lines.get_child(i).queue_free()
-			#elif(is_dot(line)):
-				#line.category = "dot"
-				#create_new(line)
 			else:
-				#line.category = get_category(line)
+				for j in range(0,$lines.get_child_count()-1):
+					var minim = line.min_distance($lines.get_child(j))
+					if(minim<5):
+						line.connected.append($lines.get_child(j))
+						if($lines.get_child(j).connected.find(line)==-1):
+							$lines.get_child(j).connected.append(line)
 				create_new(line)
 
 func is_complete(line):
 	if(line.points[0].distance_to(line.points[line.points.size()-1])<5):
 			return true
+
 
 func create_new(_line):
 	#print(line.category)
@@ -284,28 +287,31 @@ func draw_template(template):
 	$lines.get_child(i).position = Vector2(400,400)
 	i+=1
 
-func organize(lines):
-	var dis = lines_size(lines)/2
-	print(dis)
+func organize(lines : Array):
 	var array_points = []
-	var points : Array[Point] = []
-	while(not lines.is_empty()):
-		var main_line = lines.pop_front()
-		for point in main_line.points:
-					points.append(Point.new(point.x,point.y,0))
-		var remaining_lines =[]
-		for k in range(0,lines.size()):
-			if(mid_point(main_line).distance_to(mid_point(lines[k]))<dis):
-				for point in lines[k].points:
-					points.append(Point.new(point.x,point.y,k+1))
-			else:
-				remaining_lines.append(lines[k])
+	var visited = {}
+	for start_line in lines:
+		if(visited.has(start_line)):
+			continue
+		var points : Array[Point] = []
+		var queue = [start_line]
+		visited[start_line] = true
+		var stroke_id = 0 
+		while not queue.is_empty():
+			var current_line = queue.pop_front()
+			for point in current_line.points:
+				points.append(Point.new(point.x,point.y,stroke_id))
+			stroke_id +=1
+			for neighbor in current_line.connected:
+				if lines.has(neighbor) and not visited.has(neighbor):
+					visited[neighbor] = true
+					queue.append(neighbor)
 		array_points.append(points)
-		points = []
-		lines =remaining_lines
 	return array_points
 
 func _on_submit_pressed() -> void:
+	for line in $lines.get_children():
+		print(line.connected)
 	var templates = Symbols.get_templates()
 	var array_points = organize($lines.get_children().filter(func(line): return not line.is_queued_for_deletion()))
 	for pointss in array_points:

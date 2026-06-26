@@ -1,6 +1,6 @@
 extends Line2D
 class_name customLine2D
-@export var category : String  = "default"
+@export var connected : Array[customLine2D] = []
 func to_point(stroke_id):
 	var temp : Array[Point] = []
 	var i = 0
@@ -17,3 +17,10 @@ func from_point(inputted_points : Array[Point]):
 		temp[i] = Vector2(point.x,point.y)
 		i+=1
 	points = temp
+
+func min_distance(line):
+	var minimum = INF
+	for i in range(line.points.size()):
+		for j in range(points.size()):
+			minimum = min(minimum,line.points[i].distance_to(points[j]))
+	return minimum
