@@ -29,7 +29,7 @@ func _process(_delta):
 			else:
 				for j in range(0,$lines.get_child_count()-1):
 					var minim = line.min_distance($lines.get_child(j))
-					if(minim<5):
+					if(minim<10):
 						line.connected.append($lines.get_child(j))
 						if($lines.get_child(j).connected.find(line)==-1):
 							$lines.get_child(j).connected.append(line)
@@ -276,16 +276,17 @@ func get_category(line):
 		
 func draw_template(template):
 	var temp : Array[Vector2]= []
-	temp.resize(template.size())
-	var k = 0
+	var j =1
 	for point in template:
-		temp[k] = Vector2(point.x,point.y)
-		k+=1
-	var new_line = Line2D.new()
-	new_line.points = temp
-	$lines.add_child(new_line)
-	$lines.get_child(i).position = Vector2(400,400)
-	i+=1
+		temp.append(Vector2(point.x,point.y))
+		if(j==template.size() or (point.stroke_id!=template[j].stroke_id)):
+			var new_line = customLine2D.new()
+			new_line.points = temp
+			$lines.add_child(new_line)
+			$lines.get_child(i).position = Vector2(400,400)
+			i+=1
+			temp = []
+		j+=1
 
 func organize(lines : Array):
 	var array_points = []
@@ -310,8 +311,6 @@ func organize(lines : Array):
 	return array_points
 
 func _on_submit_pressed() -> void:
-	for line in $lines.get_children():
-		print(line.connected)
 	var templates = Symbols.get_templates()
 	var array_points = organize($lines.get_children().filter(func(line): return not line.is_queued_for_deletion()))
 	for pointss in array_points:
@@ -322,6 +321,7 @@ func _on_submit_pressed() -> void:
 			draw_template(result["template"])
 		else:
 			print("nothing matched")
+	#draw_template(templates[30])
 
 
 func _on_clear_pressed() -> void:

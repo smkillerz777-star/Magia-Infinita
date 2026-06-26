@@ -366,13 +366,57 @@ Point.new(150.0, 0.0,0),
 Point.new(80.0, 40.0,0),
 Point.new(150.0, 0.0,1),
 Point.new(80.0, -40.0,1)]
+
+static var column_sign : Array[Point] = [
+Point.new(80.0, 0.0,0),
+Point.new(0.0, 0.0,0),
+Point.new(0.0, 30.0,0),
+Point.new(0.0, 0.0,1),
+Point.new(0.0, -30.0,1)
+]
+
+static var levitation_sign : Array[Point] = [
+Point.new(60.0, 20.0,0),
+Point.new(80.0, 0.0,0),
+Point.new(0.0, 0.0,0),
+Point.new(0.0, 30.0,0),
+Point.new(0.0, 0.0,1),
+Point.new(0.0, -30.0,1),
+Point.new(80.0, 0.0,2),
+Point.new(60.0, -20.0,2)
+]
+static var pull : Array[Point] = [
+Point.new(60.0, 20.0,0),
+Point.new(80.0, 0.0,0),
+Point.new(0.0, 0.0,0),
+Point.new(50.0, 0.0,1),
+Point.new(20.0, -20.0,1),
+Point.new(20.0, 20.0,1),
+Point.new(50.0, 0.0,1),
+Point.new(80.0, 0.0,2),
+Point.new(60.0, -20.0,2)
+]
+static var crush : Array[Point] = [
+Point.new(0.0, 0.0,0),
+Point.new(40.0, -40.0,0),
+Point.new(80.0, 0.0,0),
+Point.new(120.0, -40.0,0),
+Point.new(160.0, 0.0,0)
+]
+static var region : Array[Point] = [
+Point.new(0.0, 0.0,0),
+Point.new(40.0, -40.0,0),
+Point.new(80.0, 0.0,0)
+]
 static func get_templates():
-	var symbol = direction_sign
-	var templates = [symbol]
-	var i = 15
-	while(i<360):
-		templates.append(rotate(symbol,i))
-		i+=15
+	var symbols = [direction_sign,column_sign,levitation_sign,pull,crush,region]
+	var templates = []
+	for symbol in symbols:
+		var i = 0
+		while(i<360):
+			templates.append(rotate(symbol,i))
+			i+=45
+	templates.append(get_circle())
 	return templates
 static func rotate(points : Array[Point],deg : float =0.0):
 	if points.is_empty():
@@ -389,4 +433,12 @@ static func rotate(points : Array[Point],deg : float =0.0):
 	for point in points:
 		temp[j] = Point.new(centroid.x + (point.x - centroid.x)*cos(angle) - (point.y - centroid.y)*sin(angle),centroid.y + (point.x - centroid.x)*sin(angle) + (point.y - centroid.y)*cos(angle),point.stroke_id)
 		j+=1
+	return temp
+
+static func get_circle(radius=200):
+	var temp : Array[Point]= []
+	temp.resize(361)
+	for j in range(0,360):
+		temp[j] = Point.new(cos(deg_to_rad(j))*radius,sin(deg_to_rad(j))*radius,0)
+	temp[360] = temp[0]
 	return temp

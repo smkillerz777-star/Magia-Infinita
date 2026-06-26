@@ -118,19 +118,34 @@ static func p_recognizer(points : Array[Point],templates):
 	var n = 64
 	var normalized_points = normalize(points,n)
 	var score = INF
-	var result = 0
+	var result = []
 	for template in templates:
 		var normalized_template = normalize(template,n)
 		var d = greedy_cloud_match(normalized_points,normalized_template,n)
 		if(score>d):
 			score = d
 			result = template
+	if(result.is_empty()):
+		return {"prob" : 0}
 	return {"name": name_template(result),"template": result,"prob" : max(0.0,1.0-score/(0.2*n))}
 
 static func name_template(temp):
 	var con = contains(Symbols.get_templates(),temp)
 	if(con!=-1):
-		return "direction_sign" + str(con)
+		if(con<8):
+			return "direction_sign" + str(con)
+		elif(con<16):
+			return "column_sign" + str(con-8)
+		elif(con<24):
+			return "levitation_sign" + str(con-16)
+		elif(con<32):
+			return "pull" + str(con-24)
+		elif(con<40):
+			return "crush" + str(con-32)
+		elif(con<48):
+			return "region" + str(con-40)
+		elif(con==Symbols.get_templates().size()-1):
+			return "circle"
 	else:
 		return "not found"
 static func contains(templates,temp):
