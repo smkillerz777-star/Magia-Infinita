@@ -408,6 +408,16 @@ Point.new(0.0, 0.0,0),
 Point.new(40.0, -40.0,0),
 Point.new(80.0, 0.0,0)
 ]
+static var gather : Array[Point] = [
+Point.new(0.0,0.0,0),
+Point.new(40.0,-40.0,0),
+Point.new(80.0,0.0,0),
+Point.new(40.0,-40.0,1),
+Point.new(40.0,80.0,1),
+Point.new(0.0,120.0,1),
+Point.new(40.0,80.0,2),
+Point.new(80.0,120.0,2),
+]
 static var fire : Array[Point] = [
 Point.new(0.0, 43.3012701892219,0),
 Point.new(25.0, 0.0,0),
@@ -420,17 +430,50 @@ Point.new(40.0,40.0,2),
 Point.new(-12.5,21.650635094611,3),
 Point.new(-40.0,40.0,3)
 ]
-static var signs = ["direction_sign","column_sign","levitation_sign","pull","crush","region"]
-static var sigil = ["fire"]
+static var earth : Array[Point] = [
+Point.new(25.0,0.0,0),
+Point.new(-25.0, 0.0,0),
+Point.new(0.0, 0.0,1),
+Point.new(0.0, 50.0,1),
+Point.new(25.0, 30.0,1),
+Point.new(12.0, 15.0,1),
+Point.new(0.0, 50.0,2),
+Point.new(-25.0, 30.0,2),
+Point.new(-12.0, 15.0,2)
+]
+static var light : Array[Point] = [
+Point.new(25.0,25.0,0),
+Point.new(-25.0, 25.0,0),
+Point.new(-25.0,-25.0,0),
+Point.new(25.0, -25.0,0),
+Point.new(25.0,25.0,0),
+Point.new(25.0,0.0,1),
+Point.new(0.0,25.0,1),
+Point.new(-25.0,0.0,1),
+Point.new(0.0,-25.0,1),
+Point.new(25.0, 0.0,1),
+Point.new(25.0,0.0,2),
+Point.new(50.0,0.0,2),
+Point.new(-25.0,0.0,3),
+Point.new(-50.0,0.0,3),
+Point.new(0.0,25.0,4),
+Point.new(0.0,50.0,4),
+Point.new(0.0,-25.0,5),
+Point.new(0.0,-50.0,5)
+]
+static var signs = ["direction_sign","column_sign","levitation_sign","pull","crush","region","gather"]
+static var sigil = ["fire","earth","light"]
 static func get_templates():
-	var symbols = [direction_sign,column_sign,levitation_sign,pull,crush,region]
+	var signss = [direction_sign,column_sign,levitation_sign,pull,crush,region,gather]
+	var sigils = [fire,earth,light]
 	var templates = []
-	for symbol in symbols:
+	for symbol in signss:
 		var i = 0
 		while(i<360):
 			templates.append(rotate(symbol,i))
 			i+=45
-	templates.append(fire)
+	for symbol in sigils:
+		templates.append(symbol)
 	templates.append(get_circle())
 	return templates
 static func rotate(points : Array[Point],deg : float =0.0):

@@ -331,6 +331,7 @@ func _on_submit_pressed() -> void:
 		print("this is a valid magic circle")
 	else:
 		print("this is not a valid magic circle")
+	draw_template(templates[48])
 
 func is_magic_circle(magic_circle : Array[String],coordinates : Array[Vector2],radius,indices):
 	if(not magic_circle.has("circle")):
@@ -340,11 +341,11 @@ func is_magic_circle(magic_circle : Array[String],coordinates : Array[Vector2],r
 	magic_circle.erase("circle")
 	var signs : Array[String]= []
 	var sigil : Array[String]= []
-	for index in range(indices.size()):
-		if(indices[index]>=48):
-			sigil.append(magic_circle[index])
+	for sym in magic_circle:
+		if sym in Symbols.sigil:
+			sigil.append(sym)
 		else:
-			signs.append(magic_circle[index])
+			signs.append(sym)
 	if(magic_circle.is_empty()):
 		print("empty circle: no effect")
 		return true

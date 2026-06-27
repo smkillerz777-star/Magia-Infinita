@@ -145,10 +145,18 @@ static func name_template(temp):
 			return {"name":"crush" + str(con-32), "index" : con}
 		elif(con<48):
 			return {"name":"region" + str(con-40), "index" : con}
-		elif(con==48):
+		elif(con<56):
+			return {"name":"gather" + str(con-48), "index" : con}
+		elif(con==56):
 			return {"name":"fire","index" : con}
+		elif(con==57):
+			return {"name":"earth","index" : con}
+		elif(con==58):
+			return {"name":"light","index" : con}
 		elif(con==Symbols.get_templates().size()-1):
 			return {"name":"circle","index" : con}
+		else:
+			return {"name":"currently not listed","index" : con}
 	else:
 		return {"name":"not found","index": -1}
 
