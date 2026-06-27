@@ -41,6 +41,7 @@ func is_complete(line):
 
 
 func create_new(_line):
+
 	#print(line.category)
 	#line.default_color = Color(0,0,0,1)
 	#if(line.category=="default"):
@@ -316,40 +317,53 @@ func _on_submit_pressed() -> void:
 	var array_points = organize($lines.get_children().filter(func(line): return not line.is_queued_for_deletion()))
 	var coordinates : Array[Vector2] = []
 	var radius = 0
+	var indices = []
 	for pointss in array_points:
 		var result = Recognizer.p_recognizer(pointss,templates)
 		if(result["prob"]>=0.30):
 			magic_circle.append(result["name"])
 			coordinates.append(mid_point(pointss))
+			indices.append(result["index"])
 			if(result["name"]=="circle"):
 				radius = line_size(result["template"])
 			draw_template(result["template"])
-	if(is_magic_circle(magic_circle,coordinates,radius)):
+	if(is_magic_circle(magic_circle,coordinates,radius,indices)):
 		print("this is a valid magic circle")
 	else:
 		print("this is not a valid magic circle")
 
-func is_magic_circle(magic_circle : Array[String],coordinates : Array[Vector2],radius):
-	if(magic_circle.size()%4!=1 or not magic_circle.has("circle")):
+func is_magic_circle(magic_circle : Array[String],coordinates : Array[Vector2],radius,indices):
+	if(not magic_circle.has("circle")):
 		return false
 	var center: Vector2 = coordinates.pop_at(magic_circle.find("circle"))
+	indices.remove_at(magic_circle.find("circle"))
 	magic_circle.erase("circle")
+	var signs : Array[String]= []
+	var sigil : Array[String]= []
+	for index in range(indices.size()):
+		if(indices[index]>=48):
+			sigil.append(magic_circle[index])
+		else:
+			signs.append(magic_circle[index])
 	if(magic_circle.is_empty()):
 		print("empty circle: no effect")
 		return true
+	if(sigil.size()!= 1 or signs.size()%4!=0):
+		print("invalid number of sigils and signs")
+		return false
 	var count : Array[int]= []
 	var angles : Array = []
-	count.resize(Symbols.all_symbols.size())
-	angles.resize(Symbols.all_symbols.size())
+	count.resize(Symbols.signs.size())
+	angles.resize(Symbols.signs.size())
 	for j in range(angles.size()):
 		angles[j] = []
 		count[j] = 0
 	for num in count:
 		num = 0
-	for symbol in magic_circle:
+	for symbol in signs:
 		var name_symbol = symbol.substr(0,symbol.length()-1)
-		for j in range(Symbols.all_symbols.size()):
-			if(name_symbol==Symbols.all_symbols[j]):
+		for j in range(Symbols.signs.size()):
+			if(name_symbol==Symbols.signs[j]):
 				angles[j].append(int(symbol.substr(symbol.length()-1)))
 				count[j]+=1
 	for num in count:

@@ -127,27 +127,31 @@ static func p_recognizer(points : Array[Point],templates):
 			result = template
 	if(result.is_empty()):
 		return {"prob" : 0}
-	return {"name": name_template(result),"template": result,"prob" : max(0.0,1.0-score/(0.2*n))}
+	var about = name_template(result)
+	return {"name": about["name"],"template": result,"prob" : max(0.0,1.0-score/(0.2*n)),"index": about["index"]}
 
 static func name_template(temp):
 	var con = contains(Symbols.get_templates(),temp)
 	if(con!=-1):
 		if(con<8):
-			return "direction_sign" + str(con)
+			return {"name":"direction_sign" + str(con), "index" : con}
 		elif(con<16):
-			return "column_sign" + str(con-8)
+			return {"name":"column_sign" + str(con-8), "index" : con}
 		elif(con<24):
-			return "levitation_sign" + str(con-16)
+			return {"name":"levitation_sign" + str(con-16), "index" : con}
 		elif(con<32):
-			return "pull" + str(con-24)
+			return {"name":"pull" + str(con-24), "index" : con}
 		elif(con<40):
-			return "crush" + str(con-32)
+			return {"name":"crush" + str(con-32), "index" : con}
 		elif(con<48):
-			return "region" + str(con-40)
+			return {"name":"region" + str(con-40), "index" : con}
+		elif(con==48):
+			return {"name":"fire","index" : con}
 		elif(con==Symbols.get_templates().size()-1):
-			return "circle"
+			return {"name":"circle","index" : con}
 	else:
-		return "not found"
+		return {"name":"not found","index": -1}
+
 static func contains(templates,temp):
 	for i in range(templates.size()):
 		if(is_identical(templates[i],temp)):
