@@ -317,27 +317,23 @@ func _on_submit_pressed() -> void:
 	var array_points = organize($lines.get_children().filter(func(line): return not line.is_queued_for_deletion()))
 	var coordinates : Array[Vector2] = []
 	var radius = 0
-	var indices = []
 	for pointss in array_points:
 		var result = Recognizer.p_recognizer(pointss,templates)
 		if(result["prob"]>=0.30):
 			magic_circle.append(result["name"])
 			coordinates.append(mid_point(pointss))
-			indices.append(result["index"])
 			if(result["name"]=="circle"):
 				radius = line_size(result["template"])
 			draw_template(result["template"])
-	if(is_magic_circle(magic_circle,coordinates,radius,indices)):
+	if(is_magic_circle(magic_circle,coordinates,radius)):
 		print("this is a valid magic circle")
 	else:
 		print("this is not a valid magic circle")
-	draw_template(templates[48])
 
-func is_magic_circle(magic_circle : Array[String],coordinates : Array[Vector2],radius,indices):
+func is_magic_circle(magic_circle : Array[String],coordinates : Array[Vector2],radius):
 	if(not magic_circle.has("circle")):
 		return false
 	var center: Vector2 = coordinates.pop_at(magic_circle.find("circle"))
-	indices.remove_at(magic_circle.find("circle"))
 	magic_circle.erase("circle")
 	var signs : Array[String]= []
 	var sigil : Array[String]= []
@@ -393,3 +389,14 @@ func _on_clear_pressed() -> void:
 	for line in $lines.get_children():
 		line.queue_free()
 	i = 0
+
+
+func _on_points_pressed() -> void:
+		var array_points = organize($lines.get_children().filter(func(line): return not line.is_queued_for_deletion()))
+		var stroke = 0
+		for points in array_points:
+			points = Recognizer.resample(points,32)
+			draw_template(points)
+			for point in points:
+				print("Point.new(" + str(point.x) + "," + str(point.y) + "," + str(stroke) + "),")
+			stroke+=1

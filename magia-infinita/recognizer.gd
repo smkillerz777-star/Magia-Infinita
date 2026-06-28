@@ -128,37 +128,41 @@ static func p_recognizer(points : Array[Point],templates):
 	if(result.is_empty()):
 		return {"prob" : 0}
 	var about = name_template(result)
-	return {"name": about["name"],"template": result,"prob" : max(0.0,1.0-score/(0.2*n)),"index": about["index"]}
+	return  {"name": about,"template": result,"prob" : max(0.0,1.0-score/(0.2*n))}
 
 static func name_template(temp):
 	var con = contains(Symbols.get_templates(),temp)
 	if(con!=-1):
 		if(con<8):
-			return {"name":"direction_sign" + str(con), "index" : con}
+			return "direction_sign" + str(con)
 		elif(con<16):
-			return {"name":"column_sign" + str(con-8), "index" : con}
+			return "column_sign" + str(con-8)
 		elif(con<24):
-			return {"name":"levitation_sign" + str(con-16), "index" : con}
+			return "levitation_sign" + str(con-16)
 		elif(con<32):
-			return {"name":"pull" + str(con-24), "index" : con}
+			return "pull" + str(con-24)
 		elif(con<40):
-			return {"name":"crush" + str(con-32), "index" : con}
+			return "crush" + str(con-32)
 		elif(con<48):
-			return {"name":"region" + str(con-40), "index" : con}
+			return "region" + str(con-40)
 		elif(con<56):
-			return {"name":"gather" + str(con-48), "index" : con}
-		elif(con==56):
-			return {"name":"fire","index" : con}
-		elif(con==57):
-			return {"name":"earth","index" : con}
-		elif(con==58):
-			return {"name":"light","index" : con}
+			return "gather" + str(con-48)
+		elif(con<60):
+			return "fire" + str(con-56)
+		elif(con<68):
+			return "earth" + str(con-60)
+		elif(con<70):
+			return "light" + str(con-68)
+		elif(con<74):
+			return "water" + str(con-70)
+		elif(con<78):
+			return "wind" + str(con-74)
 		elif(con==Symbols.get_templates().size()-1):
-			return {"name":"circle","index" : con}
+			return "circle"
 		else:
-			return {"name":"currently not listed","index" : con}
+			return "currently not listed"
 	else:
-		return {"name":"not found","index": -1}
+		return "not found"
 
 static func contains(templates,temp):
 	for i in range(templates.size()):
