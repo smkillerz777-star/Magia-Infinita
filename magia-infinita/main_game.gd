@@ -329,11 +329,7 @@ func _on_submit_pressed() -> void:
 			draw_template(result["template"])
 	if(is_magic_circle(magic_circle,coordinates,radius)):
 		var info = decompose(magic_circle,real_circle)
-		print("property ",info["property"])
-		for data in info["sign_data"]:
-			print(data["type"],":")
-			print(data["angle"])
-			print(data["size"])
+		power(info)
 	else:
 		print("this is not a valid magic circle")
 
@@ -414,12 +410,30 @@ func _on_points_pressed() -> void:
 func decompose(magic_circle,real_circle):
 	var property : String = "none"
 	var sign_data = []
+	var inde = -1
+	var cat = []
+	var types = []
+	var type = "none"
+	var relation : Dictionary = {}
 	for index in range(magic_circle.size()):
-		if(magic_circle[index].substr(0,magic_circle[index].length()-1) in Symbols.signs):
-			sign_data.append({"type" : magic_circle[index].substr(0,magic_circle[index].length()-1),"angle" : int(magic_circle[index].substr(magic_circle[index].length()-1))*45,"size" : line_size(real_circle[index])})
-		elif(magic_circle[index].substr(0,magic_circle[index].length()-1) in Symbols.sigil):
-			property = magic_circle[index]
+		type =  magic_circle[index].substr(0,magic_circle[index].length()-1)
+		if(type in Symbols.signs):
+			if(not type in types):
+				types.append(type)
+				sign_data.append({"type" : type , "info" : []})
+				inde+=1
+				relation[type] =inde
+			cat = { "angle" : int(magic_circle[index].substr(magic_circle[index].length()-1))*45,"size" : line_size(real_circle[index])}
+			sign_data[relation[type]]["info"].append(cat)
+		elif(type in Symbols.sigil):
+			property = type
 	return {"property" : property, "sign_data" : sign_data}
 
-func power(magic_circle):
-	pass
+func power(info):
+	var effect = {}
+	for sym in info["sign_data"]:
+		var total = Vector2(0,0)
+		for data in sym["info"]:
+			total += Vector2(cos(deg_to_rad(data["angle"]))*data["size"],sin(deg_to_rad(data["angle"]))*data["size"])
+		effect[sym["type"]] = total
+	print(effect)
