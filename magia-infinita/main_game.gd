@@ -317,20 +317,28 @@ func _on_submit_pressed() -> void:
 	var array_points = organize($lines.get_children().filter(func(line): return not line.is_queued_for_deletion()))
 	var coordinates : Array[Vector2] = []
 	var radius = 0
+	var real_circle = []
 	for pointss in array_points:
 		var result = Recognizer.p_recognizer(pointss,templates)
 		if(result["prob"]>=0.30):
+			real_circle.append(pointss)
 			magic_circle.append(result["name"])
 			coordinates.append(mid_point(pointss))
 			if(result["name"]=="circle"):
-				radius = line_size(result["template"])
+				radius = line_size(result["template"])/2
 			draw_template(result["template"])
 	if(is_magic_circle(magic_circle,coordinates,radius)):
-		print("this is a valid magic circle")
+		var info = decompose(magic_circle,real_circle)
+		print("property ",info["property"])
+		for data in info["sign_data"]:
+			print(data["type"],":")
+			print(data["angle"])
+			print(data["size"])
 	else:
 		print("this is not a valid magic circle")
 
 func is_magic_circle(magic_circle : Array[String],coordinates : Array[Vector2],radius):
+	return true
 	if(not magic_circle.has("circle")):
 		return false
 	var center: Vector2 = coordinates.pop_at(magic_circle.find("circle"))
@@ -338,7 +346,7 @@ func is_magic_circle(magic_circle : Array[String],coordinates : Array[Vector2],r
 	var signs : Array[String]= []
 	var sigil : Array[String]= []
 	for sym in magic_circle:
-		if sym in Symbols.sigil:
+		if sym.substr(0,sym.length()-1) in Symbols.sigil:
 			sigil.append(sym)
 		else:
 			signs.append(sym)
@@ -346,6 +354,8 @@ func is_magic_circle(magic_circle : Array[String],coordinates : Array[Vector2],r
 		print("empty circle: no effect")
 		return true
 	if(sigil.size()!= 1 or signs.size()%4!=0):
+		print("number of sigils: ",sigil.size())
+		print("number of signs: ",signs.size())
 		print("invalid number of sigils and signs")
 		return false
 	var count : Array[int]= []
@@ -400,3 +410,16 @@ func _on_points_pressed() -> void:
 			for point in points:
 				print("Point.new(" + str(point.x) + "," + str(point.y) + "," + str(stroke) + "),")
 			stroke+=1
+
+func decompose(magic_circle,real_circle):
+	var property : String = "none"
+	var sign_data = []
+	for index in range(magic_circle.size()):
+		if(magic_circle[index].substr(0,magic_circle[index].length()-1) in Symbols.signs):
+			sign_data.append({"type" : magic_circle[index].substr(0,magic_circle[index].length()-1),"angle" : int(magic_circle[index].substr(magic_circle[index].length()-1))*45,"size" : line_size(real_circle[index])})
+		elif(magic_circle[index].substr(0,magic_circle[index].length()-1) in Symbols.sigil):
+			property = magic_circle[index]
+	return {"property" : property, "sign_data" : sign_data}
+
+func power(magic_circle):
+	pass
