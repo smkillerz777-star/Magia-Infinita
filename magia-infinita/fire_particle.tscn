@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://c5jabpp2ogrsk"]
+
+[ext_resource type="Texture2D" uid="uid://yd16v6piynlg" path="res://assets/Fire-Smoke-PNG-Transparent-Image.png" id="1_8dlmo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x64tl"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.8050528, 0.31501016, 1.92523e-07, 1)
+albedo_texture = ExtResource("1_8dlmo")
+emission_enabled = true
+emission = Color(0.13920355, 0.021624286, 9.024516e-09, 1)
+emission_energy_multiplier = 8.9
+billboard_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_um0ju"]
+offsets = PackedFloat32Array(0, 0.4738562, 1)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fv44m"]
+gradient = SubResource("Gradient_um0ju")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_d8hro"]
+emission_shape_scale = Vector3(0.2, 0.2, 0.2)
+emission_shape = 1
+emission_sphere_radius = 1.0
+gravity = Vector3(0, 2, 0)
+color_ramp = SubResource("GradientTexture1D_fv44m")
+
+[sub_resource type="QuadMesh" id="QuadMesh_8dlmo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8dlmo"]
+render_priority = -1
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.42499927, 0.44348654, 0.4024871, 1)
+albedo_texture = ExtResource("1_8dlmo")
+emission = Color(0.13920355, 0.021624286, 9.024516e-09, 1)
+emission_energy_multiplier = 8.9
+billboard_mode = 1
+
+[node name="fire_particle" type="Node3D" unique_id=1700170282]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=1843496433]
+material_override = SubResource("StandardMaterial3D_x64tl")
+process_material = SubResource("ParticleProcessMaterial_d8hro")
+draw_pass_1 = SubResource("QuadMesh_8dlmo")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="." unique_id=703201587]
+material_override = SubResource("StandardMaterial3D_8dlmo")
+lifetime = 1.5
+process_material = SubResource("ParticleProcessMaterial_d8hro")
+draw_pass_1 = SubResource("QuadMesh_8dlmo")
