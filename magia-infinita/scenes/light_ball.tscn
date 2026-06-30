@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://dsfv0ibiwv1la"]
+
+[ext_resource type="Shader" uid="uid://ydn1b70n6vic" path="res://shaders/light_ball.gdshader" id="1_80075"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nbofa"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jpv26"]
+noise = SubResource("FastNoiseLite_nbofa")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kve7x"]
+render_priority = 0
+shader = ExtResource("1_80075")
+shader_parameter/core_color = Color(1, 1, 0.9, 1)
+shader_parameter/edge_color = Color(1, 0.8, 0.2, 1)
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_jpv26")
+shader_parameter/pulse_speed = 1.5
+shader_parameter/fresnel_power = 0.21400000690512
+shader_parameter/glow_intensity = 1.745
+
+[sub_resource type="SphereMesh" id="SphereMesh_2vr86"]
+material = SubResource("ShaderMaterial_kve7x")
+
+[node name="light_ball" type="Node3D" unique_id=545971025]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=532880065]
+mesh = SubResource("SphereMesh_2vr86")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1321121112]
+light_color = Color(0.8267402, 0.81750375, 1.1551381e-06, 1)
+omni_range = 0.5

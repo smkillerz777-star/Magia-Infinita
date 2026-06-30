@@ -608,6 +608,7 @@ Point.new(150.0,185.0,5),
 static var signs = ["direction_sign","column_sign","levitation_sign","pull","crush","region","gather"]
 static var sigil = ["fire","earth","light","water","wind"]
 static func get_templates():
+	print("you can be a ")
 	var signss = [direction_sign,column_sign,levitation_sign,pull,crush,region,gather]
 	var sigils = [fire,earth,light,water,wind]
 	var templates = []
