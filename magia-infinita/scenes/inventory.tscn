@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dqwevh5plt1hj"]
 
-[ext_resource type="Script" uid="uid://cyrw1pgm4fwj1" path="res://inventory.gd" id="1_pohso"]
-[ext_resource type="Texture2D" uid="uid://cq0hmujlnh7so" path="res://icon.svg" id="2_psafj"]
+[ext_resource type="Script" uid="uid://cyrw1pgm4fwj1" path="res://scripts/inventory.gd" id="1_hj2ta"]
+[ext_resource type="Texture2D" uid="uid://cq0hmujlnh7so" path="res://icon.svg" id="2_ty45s"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pohso"]
 bg_color = Color(0.093160845, 0.093160845, 0.0931608, 1)
@@ -17,7 +17,7 @@ anchor_right = 0.9
 anchor_bottom = 0.9
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_pohso")
+script = ExtResource("1_hj2ta")
 
 [node name="Panel" type="Panel" parent="." unique_id=1956787067]
 layout_mode = 1
@@ -44,7 +44,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-icon = ExtResource("2_psafj")
+icon = ExtResource("2_ty45s")
 expand_icon = true
 
 [node name="block2" type="Panel" parent="." unique_id=1311561184]

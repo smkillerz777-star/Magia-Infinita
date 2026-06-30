@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://dv0eufd2hxrj5"]
+
+[ext_resource type="Shader" uid="uid://diet8vv2i1020" path="res://shaders/water_ball.gdshader" id="1_wwopf"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_v4dom"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_wwopf"]
+noise_type = 3
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_v4dom"]
+noise = SubResource("FastNoiseLite_wwopf")
+seamless = true
+as_normal_map = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_w4uf6"]
+noise_type = 3
+seed = 10
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xeqep"]
+noise = SubResource("FastNoiseLite_w4uf6")
+seamless = true
+as_normal_map = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wwopf"]
+render_priority = 0
+shader = ExtResource("1_wwopf")
+shader_parameter/albedo = Color(0, 0.32156864, 0.43137255, 1)
+shader_parameter/albedo2 = Color(0.53639853, 0.78177965, 0.9999998, 1)
+shader_parameter/roughness = 0.02
+shader_parameter/metallic = 0.0
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_v4dom")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_xeqep")
+shader_parameter/wave_direction = Vector2(0, 2)
+shader_parameter/wave_direction2 = Vector2(1, 0)
+shader_parameter/time_scale = 0.025
+
+[sub_resource type="GDScript" id="GDScript_v4dom"]
+script/source = "extends MeshInstance3D
+"
+
+[node name="water_ball" type="Node3D" unique_id=886238484]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=968174947]
+cast_shadow = 0
+mesh = SubResource("SphereMesh_v4dom")
+surface_material_override/0 = SubResource("ShaderMaterial_wwopf")
+script = SubResource("GDScript_v4dom")

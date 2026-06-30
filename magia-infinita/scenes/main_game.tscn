@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dak7h6lc532gs"]
 
-[ext_resource type="Script" uid="uid://cmq2ujylspex7" path="res://main_game.gd" id="1_1oj5k"]
-[ext_resource type="PackedScene" uid="uid://dyrb050hd1chi" path="res://3d_main_game.tscn" id="2_yx7mw"]
+[ext_resource type="Script" uid="uid://cmq2ujylspex7" path="res://scripts/main_game.gd" id="1_72e8q"]
+[ext_resource type="PackedScene" uid="uid://dyrb050hd1chi" path="res://scenes/3d_main_game.tscn" id="2_d2op2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1oj5k"]
 bg_color = Color(0.95686275, 0.6, 0.6, 1)
@@ -19,7 +19,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_1oj5k")
+script = ExtResource("1_72e8q")
 
 [node name="Panel" type="Panel" parent="." unique_id=1581837645]
 layout_mode = 1
@@ -53,7 +53,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="3d_world" parent="." unique_id=1737870311 instance=ExtResource("2_yx7mw")]
+[node name="3d_world" parent="." unique_id=1737870311 instance=ExtResource("2_d2op2")]
 visible = false
 
 [node name="submit" type="Button" parent="." unique_id=990304887]

@@ -1,17 +1,17 @@
 [gd_scene format=3 uid="uid://dyrb050hd1chi"]
 
-[ext_resource type="PackedScene" uid="uid://c5jabpp2ogrsk" path="res://fire_particle.tscn" id="1_c8no7"]
+[ext_resource type="PackedScene" uid="uid://bupe0sowf07jx" path="res://scenes/wind_ball.tscn" id="1_nxbvb"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_83llj"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fvnod"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 
-[sub_resource type="Sky" id="Sky_c8no7"]
-sky_material = SubResource("ProceduralSkyMaterial_83llj")
+[sub_resource type="Sky" id="Sky_nxbvb"]
+sky_material = SubResource("ProceduralSkyMaterial_fvnod")
 
-[sub_resource type="Environment" id="Environment_xadvf"]
+[sub_resource type="Environment" id="Environment_tl65b"]
 background_mode = 2
-sky = SubResource("Sky_c8no7")
+sky = SubResource("Sky_nxbvb")
 tonemap_mode = 2
 glow_enabled = true
 glow_bloom = 1.0
@@ -34,8 +34,8 @@ material = SubResource("StandardMaterial3D_c8no7")
 
 [node name="Node3D" type="Node3D" unique_id=1737870311]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1817762532]
-environment = SubResource("Environment_xadvf")
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=119031894]
+environment = SubResource("Environment_tl65b")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=328113613]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
@@ -56,5 +56,5 @@ handle_input_locally = false
 size = Vector2i(720, 720)
 render_target_update_mode = 4
 
-[node name="fire_particle" parent="." unique_id=1700170282 instance=ExtResource("1_c8no7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.392869)
+[node name="wind_ball" parent="." unique_id=160852307 instance=ExtResource("1_nxbvb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.9523535)

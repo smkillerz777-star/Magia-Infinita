@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bik62ycukksir"]
 
-[ext_resource type="Texture2D" uid="uid://cq0hmujlnh7so" path="res://icon.svg" id="1_lwf7n"]
-[ext_resource type="Script" uid="uid://c10bpbbjn3fn2" path="res://information.gd" id="1_oip44"]
+[ext_resource type="Script" uid="uid://c10bpbbjn3fn2" path="res://scripts/information.gd" id="1_7dbpe"]
+[ext_resource type="Texture2D" uid="uid://cq0hmujlnh7so" path="res://icon.svg" id="2_ixhji"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jas6l"]
 bg_color = Color(0.622554, 0.5355849, 0.87139183, 1)
@@ -20,7 +20,7 @@ anchor_right = 0.8
 anchor_bottom = 0.9
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_oip44")
+script = ExtResource("1_7dbpe")
 
 [node name="Panel" type="Panel" parent="." unique_id=2094945582]
 layout_mode = 1
@@ -33,7 +33,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_jas6l")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=79458292]
 position = Vector2(133, 109)
-texture = ExtResource("1_lwf7n")
+texture = ExtResource("2_ixhji")
 
 [node name="About" type="Label" parent="." unique_id=1887195577]
 layout_mode = 1
