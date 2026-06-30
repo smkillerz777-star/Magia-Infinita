@@ -23,7 +23,7 @@ shader_parameter/swirl_speed_2 = -1.145
 shader_parameter/noise_scale = 2.0
 shader_parameter/displacement_scale = 0.08
 shader_parameter/fresnel_power = 3.0
-shader_parameter/energy_sharpness = 1.27600001311
+shader_parameter/energy_sharpness = 1.0
 
 [node name="wind_ball" type="Node3D" unique_id=160852307]
 

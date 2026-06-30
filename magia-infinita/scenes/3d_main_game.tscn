@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dyrb050hd1chi"]
 
-[ext_resource type="PackedScene" uid="uid://bupe0sowf07jx" path="res://scenes/wind_ball.tscn" id="1_nxbvb"]
+[ext_resource type="PackedScene" uid="uid://olbtdqp13ei4" path="res://scenes/earth_ball.tscn" id="1_nxbvb"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fvnod"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -56,5 +56,5 @@ handle_input_locally = false
 size = Vector2i(720, 720)
 render_target_update_mode = 4
 
-[node name="wind_ball" parent="." unique_id=160852307 instance=ExtResource("1_nxbvb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.9523535)
+[node name="earth_ball" parent="." unique_id=841890905 instance=ExtResource("1_nxbvb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.8648634)

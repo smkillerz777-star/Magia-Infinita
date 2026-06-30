@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://olbtdqp13ei4"]
+
+[ext_resource type="Shader" uid="uid://82nircch5rho" path="res://shaders/earth_ball.gdshader" id="1_nvlcx"]
+[ext_resource type="Texture2D" uid="uid://owu4w30kd426" path="res://assets/rock_normal.png" id="2_cncdo"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2gjf4"]
+noise_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6ama5"]
+noise = SubResource("FastNoiseLite_2gjf4")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cncdo"]
+render_priority = 0
+shader = ExtResource("1_nvlcx")
+shader_parameter/rock_color = Color(0.15, 0.1, 0.08, 1)
+shader_parameter/crack_color = Color(0.9029307, 0.41440508, 5.7756904e-07, 1)
+shader_parameter/metallic = 0.1
+shader_parameter/roughness = 0.9
+shader_parameter/rock_normal = ExtResource("2_cncdo")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_6ama5")
+shader_parameter/noise_scale = 1.5
+shader_parameter/crack_sharpness = 7.0
+shader_parameter/crack_glow_intensity = 3.0
+shader_parameter/mountain_height = 0.06
+
+[sub_resource type="SphereMesh" id="SphereMesh_2gjf4"]
+material = SubResource("ShaderMaterial_cncdo")
+
+[node name="earth_ball" type="Node3D" unique_id=841890905]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1208747999]
+mesh = SubResource("SphereMesh_2gjf4")
