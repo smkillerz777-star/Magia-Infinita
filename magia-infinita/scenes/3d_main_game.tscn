@@ -34,6 +34,9 @@ material = SubResource("StandardMaterial3D_c8no7")
 
 [sub_resource type="BoxMesh" id="BoxMesh_nxbvb"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_nxbvb"]
+size = Vector3(10, 1, 10)
+
 [node name="Node3D" type="Node3D" unique_id=1737870311]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=119031894]
@@ -42,9 +45,6 @@ environment = SubResource("Environment_tl65b")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=328113613]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 shadow_enabled = true
-
-[node name="Camera3D" type="Camera3D" parent="." unique_id=930277790]
-current = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=964270553]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2484344, 0, -1.8790472)
@@ -61,6 +61,12 @@ render_target_update_mode = 4
 [node name="player" parent="." unique_id=300467718 instance=ExtResource("1_nxbvb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.1992178)
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1454825285]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=582151465]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="StaticBody3D" unique_id=1454825285]
 transform = Transform3D(10, 0, 0, 0, 1, 0, 0, 0, 10, 0, -1.5153767, 0)
 mesh = SubResource("BoxMesh_nxbvb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=300800856]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5208929, 0)
+shape = SubResource("BoxShape3D_nxbvb")
