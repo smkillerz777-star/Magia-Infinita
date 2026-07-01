@@ -23,12 +23,16 @@ viewport_path = NodePath("SubViewport")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tl65b"]
 resource_local_to_scene = true
 albedo_texture = SubResource("ViewportTexture_nxbvb")
+uv1_scale = Vector3(3, 3, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_nxbvb"]
 material = SubResource("StandardMaterial3D_tl65b")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nxbvb"]
 size = Vector3(10, 1, 10)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tl65b"]
+bg_color = Color(0.64493203, 0.35427213, 9.62615e-08, 1)
 
 [node name="Node3D" type="Node3D" unique_id=1737870311]
 script = ExtResource("1_tl65b")
@@ -59,10 +63,10 @@ handle_input_locally = false
 size = Vector2i(720, 720)
 render_target_update_mode = 4
 
-[node name="ColorRect" type="ColorRect" parent="SubViewport" unique_id=1263269212]
+[node name="Color" type="Panel" parent="SubViewport" unique_id=1600788298]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.038828135, 0.54130507, 0, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_tl65b")

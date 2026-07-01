@@ -3,15 +3,6 @@
 [ext_resource type="Script" uid="uid://cmq2ujylspex7" path="res://scripts/main_game.gd" id="1_72e8q"]
 [ext_resource type="PackedScene" uid="uid://dyrb050hd1chi" path="res://scenes/3d_main_game.tscn" id="2_d2op2"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1oj5k"]
-bg_color = Color(0.95686275, 0.6, 0.6, 1)
-border_width_left = 80
-border_width_top = 80
-border_width_right = 80
-border_width_bottom = 80
-border_color = Color(0.23921569, 0.8, 0.8, 1)
-border_blend = true
-
 [node name="main_game" type="Control" unique_id=133559608]
 layout_mode = 3
 anchors_preset = 15
@@ -21,14 +12,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_72e8q")
 
-[node name="Panel" type="Panel" parent="." unique_id=1581837645]
+[node name="color" type="ColorRect" parent="." unique_id=1908483814]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_1oj5k")
+color = Color(0.27863768, 0.5731558, 0.25764465, 1)
 
 [node name="inventory" type="Button" parent="." unique_id=1862410153]
 layout_mode = 1

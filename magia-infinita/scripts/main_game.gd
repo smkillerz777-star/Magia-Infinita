@@ -3,6 +3,7 @@ var i = 0
 var completed = 0
 var first = true
 func _process(_delta):
+	$color.modulate.r = (int($color.modulate.r)+1)%255
 	if(get_global_mouse_position().y<670):
 		if(Input.is_action_just_pressed("draw")):
 			$lines.add_child(customLine2D.new())
