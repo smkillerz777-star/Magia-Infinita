@@ -23,7 +23,8 @@ viewport_path = NodePath("SubViewport")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tl65b"]
 resource_local_to_scene = true
 albedo_texture = SubResource("ViewportTexture_nxbvb")
-uv1_scale = Vector3(3, 3, 1)
+uv1_offset = Vector3(1.5, 0, 1.5)
+uv1_triplanar = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_nxbvb"]
 material = SubResource("StandardMaterial3D_tl65b")
@@ -45,9 +46,10 @@ transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545
 shadow_enabled = true
 
 [node name="player" parent="." unique_id=300467718 instance=ExtResource("1_nxbvb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.1992178)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.6737785, 0, 4.8212805)
 
 [node name="floor" type="StaticBody3D" parent="." unique_id=582151465]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5)
 
 [node name="mesh" type="MeshInstance3D" parent="floor" unique_id=1454825285]
 transform = Transform3D(10, 0, 0, 0, 1, 0, 0, 0, 10, 0, -1.5153767, 0)
@@ -70,3 +72,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tl65b")
+
+[node name="Line2D" type="Line2D" parent="SubViewport" unique_id=1973520331]
+points = PackedVector2Array(0, 0, 720, 720)
+
+[node name="Line2D2" type="Line2D" parent="SubViewport" unique_id=234475778]
+points = PackedVector2Array(0, 0, 0, 720)
+
+[node name="Line2D3" type="Line2D" parent="SubViewport" unique_id=554354415]
+points = PackedVector2Array(720, 720, 0, 720)
