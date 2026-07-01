@@ -19,7 +19,7 @@ func _process(delta: float) -> void:
 	if(position.y>0.0):
 		velocity.y = velocity.y - gravity * delta
 	if($view/ray.is_colliding()):
-		print($view/ray.get_collision_point())
+		pass#$view/ray.get_collision_point()
 	var hori_vel = Vector2(velocity.x,velocity.z)
 	hori_vel = hori_vel.normalized()* speed
 	velocity = Vector3(hori_vel.x,velocity.y,hori_vel.y)
