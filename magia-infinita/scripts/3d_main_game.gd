@@ -11,7 +11,6 @@ func _process(delta: float) -> void:
 	#var mat = $floor/mesh.get_active_material(0) as StandardMaterial3D
 	if($player/view/ray.is_colliding()):
 		#$SubViewport.add_child(Line2D.new())
-		print(Vector2($player/view/ray.get_collision_point().x,$player/view/ray.get_collision_point().z))
 		var line = $SubViewport.get_child(i) as Line2D
 		line.add_point(Vector2($player/view/ray.get_collision_point().x,$player/view/ray.get_collision_point().z)*72)
 		#i+=1

@@ -72,12 +72,3 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tl65b")
-
-[node name="Line2D" type="Line2D" parent="SubViewport" unique_id=1973520331]
-points = PackedVector2Array(0, 0, 720, 720)
-
-[node name="Line2D2" type="Line2D" parent="SubViewport" unique_id=234475778]
-points = PackedVector2Array(0, 0, 0, 720)
-
-[node name="Line2D3" type="Line2D" parent="SubViewport" unique_id=554354415]
-points = PackedVector2Array(720, 720, 0, 720)
